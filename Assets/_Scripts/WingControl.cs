@@ -11,6 +11,7 @@ public class WingControl : NetworkBehaviour
     ForceMode2D forceMode2d = ForceMode2D.Force;
     public GameObject ll, lr, ul, ur;
     public bool llFlap, lrFlap, ulFlap, urFlap;
+    public Animator llAnim, lrAnim, ulAnim, urAnim;
 
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
@@ -34,10 +35,12 @@ public class WingControl : NetworkBehaviour
             rb2d.AddTorque(-torqueForce * Time.deltaTime, forceMode2d);
             rb2d.AddRelativeForce(new Vector2(-pushForce,pushForce) * Time.deltaTime, forceMode2d);
             ll.SetActive(true);
+            llAnim.SetBool("isFlapping", true);
         }
         else
         {
             ll.SetActive(false);
+            llAnim.SetBool("isFlapping", false);
 
         }
         if(Input.GetKey("x") || lrFlap)
@@ -46,10 +49,12 @@ public class WingControl : NetworkBehaviour
             rb2d.AddTorque(torqueForce * Time.deltaTime, forceMode2d);
             rb2d.AddRelativeForce(new Vector2(pushForce,pushForce) * Time.deltaTime, forceMode2d);
             lr.SetActive(true);
+            lrAnim.SetBool("isFlapping", true);
 
         }
         else
         {
+            lrAnim.SetBool("isFlapping", false);
 
             lr.SetActive(false);
         }
@@ -59,10 +64,12 @@ public class WingControl : NetworkBehaviour
             rb2d.AddTorque(torqueForce * Time.deltaTime, forceMode2d);
             rb2d.AddRelativeForce(new Vector2(-pushForce,-pushForce) * Time.deltaTime, forceMode2d);
             ul.SetActive(true);
+            ulAnim.SetBool("isFlapping", true);
         }
         else
         {
 
+            ulAnim.SetBool("isFlapping", false);
             ul.SetActive(false);
         }
         if(Input.GetKey(".") || urFlap)
@@ -71,10 +78,12 @@ public class WingControl : NetworkBehaviour
             rb2d.AddTorque(-torqueForce * Time.deltaTime, forceMode2d);
             rb2d.AddRelativeForce(new Vector2(pushForce,-pushForce) * Time.deltaTime, forceMode2d);
             ur.SetActive(true);
+            urAnim.SetBool("isFlapping", true);
         }
         else
         {
 
+            urAnim.SetBool("isFlapping", false);
             ur.SetActive(false);
         }
     }
