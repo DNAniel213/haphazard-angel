@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 180075832}
   - component: {fileID: 180075835}
   - component: {fileID: 180075833}
+  - component: {fileID: 180075834}
   m_Layer: 0
   m_Name: pointTrigger
   m_TagString: Untagged
@@ -314,10 +315,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24620296f6553c4fbfc8f6ad75d0a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   player: {fileID: 0}
   wingControl: {fileID: 246256205}
   wingPosition: 2
   initialized: 0
+--- !u!114 &180075834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180075831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1938087183
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!58 &180075835
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -578,7 +598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.01
   target: {fileID: 246256203}
   clientAuthority: 0
   syncVelocity: 1
@@ -708,7 +728,7 @@ RectTransform:
   m_GameObject: {fileID: 318474067}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.74335, y: 0.74335, z: 0.74335}
+  m_LocalScale: {x: 1.2733103, y: 1.2733103, z: 1.2733103}
   m_Children:
   - {fileID: 1247788688}
   m_Father: {fileID: 605376185}
@@ -716,7 +736,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -95.1}
+  m_AnchoredPosition: {x: -13, y: 17}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &318474069
@@ -1111,13 +1131,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 458018097}
-  - component: {fileID: 458018096}
   - component: {fileID: 458018095}
   - component: {fileID: 458018094}
   - component: {fileID: 458018098}
-  - component: {fileID: 458018101}
   - component: {fileID: 458018100}
   - component: {fileID: 458018099}
+  - component: {fileID: 458018101}
+  - component: {fileID: 458018096}
   m_Layer: 0
   m_Name: __NetworkManager
   m_TagString: Untagged
@@ -1192,7 +1212,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 8206942288081772328, guid: 9058bf33adca77840aa8bcbdf7066fa3,
     type: 3}
   autoCreatePlayer: 1
-  playerSpawnMethod: 1
+  playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 694757258180112091, guid: ffd6c4bdf4c7d9c48b8bd3c41a681e8c, type: 3}
 --- !u!4 &458018097
@@ -1281,7 +1301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 1514525982
+  sceneId: 3180692012
   serverOnly: 0
   visible: 0
   m_AssetId: 
@@ -1427,6 +1447,7 @@ GameObject:
   - component: {fileID: 508870395}
   - component: {fileID: 508870398}
   - component: {fileID: 508870396}
+  - component: {fileID: 508870397}
   m_Layer: 0
   m_Name: pointTrigger (3)
   m_TagString: Untagged
@@ -1460,10 +1481,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24620296f6553c4fbfc8f6ad75d0a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   player: {fileID: 0}
   wingControl: {fileID: 246256205}
   wingPosition: 0
   initialized: 0
+--- !u!114 &508870397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508870394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 3559462888
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!58 &508870398
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1616,7 +1656,7 @@ RectTransform:
   m_GameObject: {fileID: 541904138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.74335, y: 0.74335, z: 0.74335}
+  m_LocalScale: {x: 1.2733103, y: 1.2733103, z: 1.2733103}
   m_Children:
   - {fileID: 1435581202}
   m_Father: {fileID: 605376185}
@@ -1624,7 +1664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 90.2}
+  m_AnchoredPosition: {x: -8.375008, y: 169.62598}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &541904140
@@ -2029,7 +2069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -2558,6 +2598,7 @@ GameObject:
   - component: {fileID: 1075063544}
   - component: {fileID: 1075063547}
   - component: {fileID: 1075063545}
+  - component: {fileID: 1075063546}
   m_Layer: 0
   m_Name: pointTrigger (1)
   m_TagString: Untagged
@@ -2591,10 +2632,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24620296f6553c4fbfc8f6ad75d0a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   player: {fileID: 0}
   wingControl: {fileID: 246256205}
   wingPosition: 1
   initialized: 0
+--- !u!114 &1075063546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075063543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 3844825910
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!58 &1075063547
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3168,6 +3228,7 @@ GameObject:
   - component: {fileID: 1330685889}
   - component: {fileID: 1330685892}
   - component: {fileID: 1330685890}
+  - component: {fileID: 1330685891}
   m_Layer: 0
   m_Name: pointTrigger (2)
   m_TagString: Untagged
@@ -3201,10 +3262,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24620296f6553c4fbfc8f6ad75d0a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   player: {fileID: 0}
   wingControl: {fileID: 246256205}
   wingPosition: 3
   initialized: 0
+--- !u!114 &1330685891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330685888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 3905547163
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!58 &1330685892
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3564,7 +3644,7 @@ RectTransform:
   m_GameObject: {fileID: 1510952405}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.712935, y: 1.712935, z: 1.712935}
   m_Children:
   - {fileID: 952468060}
   - {fileID: 2064107898}
@@ -3575,7 +3655,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -8.375008, y: 15.115984}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1595989704

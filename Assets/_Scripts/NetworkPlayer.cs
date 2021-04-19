@@ -9,7 +9,7 @@ public class NetworkPlayer : NetworkBehaviour
     public WingControl wing = null;
     public NetworkStart gameManager = null;
     bool isInitialized = false;
-    int score = 0;
+    public int score = 0;
 
     // Start is called before the first frame update
     public override void OnStartClient()
@@ -43,9 +43,29 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
-    [Command]
     public void GetPoint()
     {
+        Debug.Log("Player Get Point " + score);
+        CmdGetPoint();
+    }
+    
+    [Command]
+    public void CmdGetPoint()
+    {
+
+        Debug.Log("CmdGetPoint " + score);
+        //score++;
+        //gameManager.CmdUpdateScore(this.pos, this.score);
+
+        RpcGetPoint();
+        gameManager.levelManager.RpcScoreChanged(gameManager.globalScore + 1);
+    }
+
+    [ClientRpc]
+    public void RpcGetPoint()
+    {
+        Debug.Log("RpcGetPoint " + score);
+        
         score++;
         gameManager.RpcUpdateScore(this.pos, this.score);
     }
@@ -53,6 +73,7 @@ public class NetworkPlayer : NetworkBehaviour
     [Command]
     public void Flap(float moveRate)
     {
+
         if(moveRate > 0)
         {
             switch(pos)
@@ -73,5 +94,6 @@ public class NetworkPlayer : NetworkBehaviour
                 case PlayerPosition.LRIGHT : wing.lrFlap = false; break;
             }
         }
+
     }
 }

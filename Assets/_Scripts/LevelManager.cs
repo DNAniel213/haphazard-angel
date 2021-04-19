@@ -26,7 +26,7 @@ public class LevelManager : NetworkBehaviour
     {
 
         isStarted = true;
-        ScoreChanged(0);
+        RpcScoreChanged(0);
     }
 
     public void FixedUpdate()
@@ -36,9 +36,41 @@ public class LevelManager : NetworkBehaviour
 
         }
     }
-
-    public void ScoreChanged(int score)
+    public void CmdScoreChanged(int score)
     {
+        Debug.Log("CmdScoreChanged " + score);
+
+        globalScore = score;
+
+        if(globalScore < 5)
+        {
+            Invoke("SpawnPointOrb", 1.2f);
+        }
+        else if (globalScore < 10)
+        {
+            Invoke("SpawnPointOrb", 1.2f);
+            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 20)
+            {
+                Invoke("SpawnPointOrb", 2.5f);
+            }
+        }
+
+        foreach(GameObject pointOrb in pointOrbs)
+        {
+            if(!pointOrb.activeSelf)
+            {
+                pointOrbs.Remove(pointOrb);
+                Destroy(pointOrb);
+
+                break;
+            }
+        }
+
+    }
+
+    public void RpcScoreChanged(int score)
+    {
+        Debug.Log("RpcScoreChanged " + score);
 
         globalScore = score;
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
-
 public class NetworkStart : NetworkBehaviour
 {
+    [Header("Vars")]
     public LevelManager levelManager;
     public int globalScore = 0;
 
@@ -17,10 +17,9 @@ public class NetworkStart : NetworkBehaviour
     public Text llscoreText;
     public Text lrscoreText, ulscoreText, urscoreText;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
+
+    [Command(requiresAuthority = false)]
     public void StartGame()
     {
 
@@ -28,10 +27,12 @@ public class NetworkStart : NetworkBehaviour
         levelManager.StartGame();
 
     }
+
+    [Command]
     public void CmdUpdateScore(PlayerPosition pos, int score)
     {
+        Debug.Log("CmdUpdateScore");
         globalScore++;
-        levelManager.ScoreChanged(globalScore);
         switch(pos)
         {
             case PlayerPosition.ULEFT : ulscoreText.text = score+""; break;
@@ -39,13 +40,14 @@ public class NetworkStart : NetworkBehaviour
             case PlayerPosition.LLEFT : llscoreText.text = score+""; break;
             case PlayerPosition.LRIGHT : lrscoreText.text = score+""; break;
         }
-        RpcUpdateScore(pos, score);
     }
 
     public void RpcUpdateScore(PlayerPosition pos, int score)
     {
+        Debug.Log("RpcUpdateScore");
+
         globalScore++;
-        levelManager.ScoreChanged(globalScore);
+        //levelManager.RpcScoreChanged(globalScore);
         switch(pos)
         {
             case PlayerPosition.ULEFT : ulscoreText.text = score+""; break;
@@ -55,9 +57,11 @@ public class NetworkStart : NetworkBehaviour
         }
 
     }
-    
+
+    [ClientRpc]
     void SetWingTriggers()
     {
+
         llwCol.InitWingTrigger();
         lrwCol.InitWingTrigger();
         ulwCol.InitWingTrigger();

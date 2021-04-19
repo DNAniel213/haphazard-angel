@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class WingTrigger : MonoBehaviour
+public class WingTrigger : NetworkBehaviour
 {
 
     public NetworkPlayer player = null; 
@@ -11,20 +11,20 @@ public class WingTrigger : MonoBehaviour
     public PlayerPosition wingPosition = PlayerPosition.NULL;
     public bool initialized = false;
 
+    [ClientRpc]
     public void InitWingTrigger()
     {
         initialized = true;
 
-        foreach(NetworkPlayer player in wingControl.players)
+        foreach(NetworkPlayer iPlayer in wingControl.players)
         {
-            if(player.pos == wingPosition)
+            if(iPlayer.pos == wingPosition )
             {
-                this.player = player;
+                this.player = iPlayer;
 
                 Debug.Log("WingTrigger Initialized for " + wingPosition.ToString() );
             }
         }
-
         if(player == null)
         {
             this.gameObject.SetActive(false);
@@ -38,18 +38,34 @@ public class WingTrigger : MonoBehaviour
     /// object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
+    /// 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Point"))
+        if(other.gameObject.CompareTag("Point")  && player.gameObject == NetworkClient.localPlayer.gameObject)
         {   
-            other.gameObject.SetActive(false);
             GetPoint();
+            CmdDisposeOrb(other.gameObject);
         }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdDisposeOrb(GameObject orb)
+    {
+        RpcDisposeOrb(orb);
+    }
+
+    [ClientRpc]
+    public void RpcDisposeOrb(GameObject orb)
+    {
+        orb.SetActive(false);
+
     }
 
     public void GetPoint()
     {
+        Debug.Log("Getting Point");
         player.GetPoint();
+
     }
 
 }
