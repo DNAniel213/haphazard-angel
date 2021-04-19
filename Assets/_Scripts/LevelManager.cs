@@ -37,7 +37,6 @@ public class LevelManager : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
     public void ScoreChanged(int score)
     {
 
@@ -71,13 +70,10 @@ public class LevelManager : NetworkBehaviour
     
     public void SpawnPointOrb()
     {
-        if(!isLocalPlayer)
-        {
-            Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
-            GameObject orb = (GameObject)Instantiate(pointOrb, pos,  Quaternion.identity);
-            pointOrbs.Add(orb );
-            NetworkServer.Spawn(orb);
-        }
+        Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
+        GameObject orb = (GameObject)Instantiate(pointOrb, pos,  Quaternion.identity);
+        pointOrbs.Add(orb );
+        NetworkServer.Spawn(orb);
 
     }
 }

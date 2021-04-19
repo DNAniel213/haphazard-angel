@@ -8,5 +8,6 @@ public enum PlayerPosition
     ULEFT,
     URIGHT,
     LLEFT,
-    LRIGHT
+    LRIGHT,
+    NULL
 }

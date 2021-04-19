@@ -10,8 +10,8 @@ public class NetworkStart : NetworkBehaviour
     public int globalScore = 0;
 
     [Header("Wing Triggers")]
-    public NetworkWingTrigger llwCol;
-    public NetworkWingTrigger lrwCol, ulwCol, urwCol;
+    public WingTrigger llwCol;
+    public WingTrigger lrwCol, ulwCol, urwCol;
 
     [Header("Player Score Text")]
     public Text llscoreText;
@@ -21,13 +21,13 @@ public class NetworkStart : NetworkBehaviour
     {
         
     }
-    [ClientRpc]
     public void StartGame()
     {
+
         SetWingTriggers();
         levelManager.StartGame();
-    }
 
+    }
     public void CmdUpdateScore(PlayerPosition pos, int score)
     {
         globalScore++;
@@ -42,25 +42,20 @@ public class NetworkStart : NetworkBehaviour
         RpcUpdateScore(pos, score);
     }
 
-    [ClientRpc]
     public void RpcUpdateScore(PlayerPosition pos, int score)
     {
-        if(isLocalPlayer)
+        globalScore++;
+        levelManager.ScoreChanged(globalScore);
+        switch(pos)
         {
-            globalScore++;
-            levelManager.ScoreChanged(globalScore);
-            switch(pos)
-            {
-                case PlayerPosition.ULEFT : ulscoreText.text = score+""; break;
-                case PlayerPosition.URIGHT : urscoreText.text = score+""; break;
-                case PlayerPosition.LLEFT : llscoreText.text = score+""; break;
-                case PlayerPosition.LRIGHT : lrscoreText.text = score+""; break;
-            }
+            case PlayerPosition.ULEFT : ulscoreText.text = score+""; break;
+            case PlayerPosition.URIGHT : urscoreText.text = score+""; break;
+            case PlayerPosition.LLEFT : llscoreText.text = score+""; break;
+            case PlayerPosition.LRIGHT : lrscoreText.text = score+""; break;
         }
 
     }
-
-    [ClientRpc]
+    
     void SetWingTriggers()
     {
         llwCol.InitWingTrigger();

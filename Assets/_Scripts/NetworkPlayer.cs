@@ -15,7 +15,7 @@ public class NetworkPlayer : NetworkBehaviour
     public override void OnStartClient()
     {
         wing = GameObject.Find("Angel").GetComponent<WingControl>();
-        gameManager = GameObject.Find("__GameManager").GetComponent<NetworkStart>();
+        gameManager = GameObject.Find("__NetworkManager").GetComponent<NetworkStart>();
 
         wing.players.Add(this);
 
@@ -43,14 +43,11 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
-    
-    [ClientRpc]
+    [Command]
     public void GetPoint()
     {
-
         score++;
-        gameManager.CmdUpdateScore(this.pos, this.score);
-
+        gameManager.RpcUpdateScore(this.pos, this.score);
     }
 
     [Command]
