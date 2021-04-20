@@ -5,6 +5,7 @@ using UnityEngine;
 public class RandomBlink : MonoBehaviour
 {
     public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -5,13 +5,15 @@ using Mirror;
 
 public class WingControl : NetworkBehaviour
 {
-    Rigidbody2D rb2d;
+    public Rigidbody2D rb2d;
     public float torqueForce = 5;
     public float pushForce = 5;
     ForceMode2D forceMode2d = ForceMode2D.Force;
     public GameObject ll, lr, ul, ur;
+    [SyncVar]
     public bool llFlap, lrFlap, ulFlap, urFlap;
     public Animator llAnim, lrAnim, ulAnim, urAnim;
+    
 
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
@@ -27,6 +29,7 @@ public class WingControl : NetworkBehaviour
     }
 
     // Update is called once per frame
+    [Server]
     void FixedUpdate()
     {
         if (Input.GetKey("z") || llFlap)

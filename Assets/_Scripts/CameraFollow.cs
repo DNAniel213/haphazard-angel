@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     public float m_XOffset = 0;
     public float m_YOffset = 0;
 
-	private float margin = 0.1f;
+	private float margin = 0.01f;
 
 	void Start () {
 		if (m_Target==null){
@@ -18,7 +18,7 @@ public class CameraFollow : MonoBehaviour
 		}
 	}
 
-    void Update() {
+    void FixedUpdate() {
         if(m_Target) {
 			float targetX = m_Target.position.x + m_XOffset;
 			float targetY = m_Target.position.y + m_YOffset;
