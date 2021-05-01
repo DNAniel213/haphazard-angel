@@ -19,7 +19,6 @@ public class IrisMove : NetworkBehaviour
     }
     private void SearchNearest()
     {
-        Debug.Log("SEARC");
         if(nearestOrbTransform != null)
         {
             if(!nearestOrbTransform.gameObject.activeSelf)

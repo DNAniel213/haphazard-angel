@@ -9,25 +9,28 @@ public class NetworkPlayer : NetworkBehaviour
     public WingControl wing = null;
     public NetworkStart gameManager = null;
     bool isInitialized = false;
+    public bool isAlive = true;
     public int score = 0;
 
     // Start is called before the first frame update
-    public override void OnStartClient()
-    {
-        wing = GameObject.Find("Angel").GetComponent<WingControl>();
-        gameManager = GameObject.Find("__NetworkManager").GetComponent<NetworkStart>();
-
-        wing.players.Add(this);
-
+    private void Awake() {
+        this.wing = GameObject.Find("Angel").GetComponent<WingControl>();
+        gameManager = GameObject.Find("_GameManager").GetComponent<NetworkStart>();
+        this.wing.players.Add(this);        
         switch(wing.players.Count)
         {
             case 1 : pos = PlayerPosition.LLEFT; break;
             case 2 : pos = PlayerPosition.LRIGHT; break;
-            case 3 : pos = PlayerPosition.ULEFT; break;
+            case 3 : pos = PlayerPosition.ULEFT; break; 
             case 4 : pos = PlayerPosition.URIGHT; break;
         }
-        if(wing != null)
-            isInitialized = true;
+        if(this.wing != null)
+            this.isInitialized = true;
+    }
+    public override void OnStartClient()
+    {
+
+
     }
 
     // Update is called once per frame
@@ -36,7 +39,7 @@ public class NetworkPlayer : NetworkBehaviour
         if(wing == null)
         {
         }
-        if(this.isLocalPlayer && wing != null) 
+        if(this.isLocalPlayer && this.isInitialized && this.isAlive) 
         {
             float movement = Input.GetAxis("Fire1");
             this.Flap(movement);
@@ -45,20 +48,24 @@ public class NetworkPlayer : NetworkBehaviour
 
     public void GetPoint()
     {
-        Debug.Log("Player Get Point " + score);
-        CmdGetPoint();
+        if(isLocalPlayer)
+        {
+            Debug.Log("Player Get Point " + score);
+            CmdGetPoint();
+            //gameManager.RpcUpdateScore(this.pos, this.score);
+        }
+
     }
-    
     [Command]
     public void CmdGetPoint()
     {
 
         Debug.Log("CmdGetPoint " + score);
-        //score++;
         //gameManager.CmdUpdateScore(this.pos, this.score);
 
-        RpcGetPoint();
         gameManager.levelManager.RpcScoreChanged(gameManager.globalScore + 1);
+        gameManager.RpcUpdateScore(this.pos, this.score);
+        RpcGetPoint();
     }
 
     [ClientRpc]
@@ -68,32 +75,20 @@ public class NetworkPlayer : NetworkBehaviour
         
         score++;
         gameManager.RpcUpdateScore(this.pos, this.score);
+        //gameManager.levelManager.RpcScoreChanged(gameManager.globalScore + 1);
     }
 
-    [Command]
     public void Flap(float moveRate)
     {
+        if(isLocalPlayer)
+        {
+            if(moveRate > 0)
+                wing.SetFlap(pos, true);
+            else 
+                wing.SetFlap(pos, false);
+        }
 
-        if(moveRate > 0)
-        {
-            switch(pos)
-            {
-                case PlayerPosition.ULEFT : wing.ulFlap = true; break;
-                case PlayerPosition.URIGHT : wing.urFlap = true; break;
-                case PlayerPosition.LLEFT : wing.llFlap = true; break;
-                case PlayerPosition.LRIGHT : wing.lrFlap = true; break;
-            }
-        }
-        else
-        {
-            switch(pos)
-            {
-                case PlayerPosition.ULEFT : wing.ulFlap = false; break;
-                case PlayerPosition.URIGHT : wing.urFlap = false; break;
-                case PlayerPosition.LLEFT : wing.llFlap = false; break;
-                case PlayerPosition.LRIGHT : wing.lrFlap = false; break;
-            }
-        }
 
     }
+
 }

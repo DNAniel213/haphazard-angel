@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Mirror;
 public class NetworkStart : NetworkBehaviour
 {
+    public GameObject angel;
     [Header("Vars")]
     public LevelManager levelManager;
     public int globalScore = 0;
@@ -22,7 +23,7 @@ public class NetworkStart : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void StartGame()
     {
-
+        angel.transform.position= new Vector3(0,0,0);
         SetWingTriggers();
         levelManager.StartGame();
 
@@ -61,7 +62,6 @@ public class NetworkStart : NetworkBehaviour
     [ClientRpc]
     void SetWingTriggers()
     {
-
         llwCol.InitWingTrigger();
         lrwCol.InitWingTrigger();
         ulwCol.InitWingTrigger();

@@ -11,3 +11,13 @@ public enum PlayerPosition
     LRIGHT,
     NULL
 }
+
+[System.Serializable]
+public enum Difficulty
+{
+    TUTORIAL,
+    EASY,
+    MEDIOCRE,
+    HARD,
+    HELL
+}

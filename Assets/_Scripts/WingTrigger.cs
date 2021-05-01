@@ -10,8 +10,9 @@ public class WingTrigger : NetworkBehaviour
     public WingControl wingControl;
     public PlayerPosition wingPosition = PlayerPosition.NULL;
     public bool initialized = false;
+    public GameObject wing = null;
 
-    [ClientRpc]
+
     public void InitWingTrigger()
     {
         initialized = true;
@@ -27,8 +28,11 @@ public class WingTrigger : NetworkBehaviour
         }
         if(player == null)
         {
-            this.gameObject.SetActive(false);
+
+            this.wing.SetActive(false);
         }
+
+
     }
 
 
@@ -41,23 +45,58 @@ public class WingTrigger : NetworkBehaviour
     /// 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Point")  && player.gameObject == NetworkClient.localPlayer.gameObject)
-        {   
-            GetPoint();
-            CmdDisposeOrb(other.gameObject);
+        if(!isServer)
+        {
+            if(other.gameObject.CompareTag("Point")  && player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
+            {   
+                GetPoint();
+                CmdDisposeOrb(other.gameObject);
+            }
+
         }
+
+    }
+
+     private void OnCollisionEnter2D(Collision2D other) {
+        if(!isServer)
+        {
+            if(other.gameObject.CompareTag("Spikes") && player.gameObject == NetworkClient.localPlayer.gameObject )
+            {
+                CmdEliminatePlayer();
+            }
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdEliminatePlayer()
+    {
+        RpcEliminatePlayer();
+    }
+
+    [ClientRpc]
+    public void RpcEliminatePlayer()
+    {
+
+        wing.SetActive(false);
+        player.isAlive = false;
     }
 
     [Command(requiresAuthority = false)]
     public void CmdDisposeOrb(GameObject orb)
     {
-        RpcDisposeOrb(orb);
+        if(orb)
+        {
+            orb.SetActive(false);
+            RpcDisposeOrb(orb);
+        }
+
     }
 
     [ClientRpc]
     public void RpcDisposeOrb(GameObject orb)
     {
-        orb.SetActive(false);
+        if(orb)
+            orb.SetActive(false);
 
     }
 
