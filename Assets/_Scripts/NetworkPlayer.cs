@@ -5,11 +5,13 @@ using Mirror;
 
 public class NetworkPlayer : NetworkBehaviour
 {
+    public static NetworkPlayer localPlayer;
     public PlayerPosition pos;
     public WingControl wing = null;
     public NetworkStart gameManager = null;
     bool isInitialized = false;
     public bool isAlive = true;
+    [SerializeField] GameObject playerLobbyUI;
     public int score = 0;
 
     // Start is called before the first frame update
@@ -30,9 +32,13 @@ public class NetworkPlayer : NetworkBehaviour
     public override void OnStartClient()
     {
 
-
+        if (isLocalPlayer) {
+            localPlayer = this;
+        } else {
+            Debug.Log ($"Spawning other player UI Prefab");
+            playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
+        }
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {
