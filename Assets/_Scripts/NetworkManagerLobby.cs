@@ -15,7 +15,13 @@ public class NetworkManagerLobby : NetworkManager
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
 
+    public static GameObject pointOrb_prefab;
+
     //public override void OnStartServer() => spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
+
+    private void Start() {
+        NetworkManagerLobby.pointOrb_prefab = this.spawnPrefabs[0];
+    }
 
     public override void OnClientConnect(NetworkConnection conn)
     {
@@ -59,4 +65,6 @@ public class NetworkManagerLobby : NetworkManager
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
     }
+
+
 }

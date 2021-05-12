@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Point
   - Spikes
+  - NetworkPlayer
   layers:
   - Default
   - TransparentFX

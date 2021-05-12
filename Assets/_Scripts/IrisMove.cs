@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class IrisMove : NetworkBehaviour
+public class IrisMove : MonoBehaviour
 {
     // Start is called before the first frame update
     public LevelManager levelManager;
@@ -14,8 +14,7 @@ public class IrisMove : NetworkBehaviour
 
     public void Start()
     {
-        if(isServer)
-            InvokeRepeating("SearchNearest", 1.0f, 2.0f);
+        //InvokeRepeating("SearchNearest", 1.0f, 1.0f);
     }
     private void SearchNearest()
     {

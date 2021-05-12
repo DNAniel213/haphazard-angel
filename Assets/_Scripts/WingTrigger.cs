@@ -1,41 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 
-public class WingTrigger : NetworkBehaviour
+public class WingTrigger : MonoBehaviour
 {
-
+    public NetworkStart netStart = null;
     public NetworkPlayer player = null; 
     public WingControl wingControl;
     public PlayerPosition wingPosition = PlayerPosition.NULL;
     public bool initialized = false;
     public GameObject wing = null;
+    
+    public Text scoreText = null;
 
-
-    public void InitWingTrigger()
+    public void Start()
     {
-        initialized = true;
-
-        foreach(NetworkPlayer iPlayer in wingControl.players)
-        {
-            if(iPlayer.pos == wingPosition )
-            {
-                this.player = iPlayer;
-
-                Debug.Log("WingTrigger Initialized for " + wingPosition.ToString() );
-            }
-        }
-        if(player == null)
-        {
-
-            this.wing.SetActive(false);
-        }
-
-
+        StartCoroutine(LateStart(0.5f));
     }
 
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        initialized = true;
 
+        GameObject[] players = GameObject.FindGameObjectsWithTag("NetworkPlayer");
+
+        foreach(GameObject playerobj in players)
+        {
+            NetworkPlayer p = playerobj.GetComponent<NetworkPlayer>();
+            p.SetAngel();
+            Debug.Log(p.pos + " ??? "  + wingPosition);
+            if(p.pos == wingPosition)
+            {
+                this.player = playerobj.GetComponent<NetworkPlayer>();
+            }
+        }
+
+        if(player == null)
+        {
+            wing.SetActive(false);
+        }
+    }
 
     /// <summary>
     /// Sent when another object enters a trigger collider attached to this
@@ -45,35 +52,32 @@ public class WingTrigger : NetworkBehaviour
     /// 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(!isServer)
-        {
-            if(other.gameObject.CompareTag("Point")  && player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
-            {   
-                GetPoint();
-                CmdDisposeOrb(other.gameObject);
-            }
 
+        if(other.gameObject.CompareTag("Point")  )
+        {   
+            other.gameObject.SetActive(false);
+
+            if(player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
+                GetPoint(other.gameObject);
+            //CmdDisposeOrb(other.gameObject);
         }
+
 
     }
 
      private void OnCollisionEnter2D(Collision2D other) {
-        if(!isServer)
-        {
+
             if(other.gameObject.CompareTag("Spikes") && player.gameObject == NetworkClient.localPlayer.gameObject )
             {
-                CmdEliminatePlayer();
+                //CmdEliminatePlayer();
             }
-        }
     }
 
-    [Command(requiresAuthority = false)]
     public void CmdEliminatePlayer()
     {
         RpcEliminatePlayer();
     }
 
-    [ClientRpc]
     public void RpcEliminatePlayer()
     {
 
@@ -81,7 +85,6 @@ public class WingTrigger : NetworkBehaviour
         player.isAlive = false;
     }
 
-    [Command(requiresAuthority = false)]
     public void CmdDisposeOrb(GameObject orb)
     {
         if(orb)
@@ -92,7 +95,6 @@ public class WingTrigger : NetworkBehaviour
 
     }
 
-    [ClientRpc]
     public void RpcDisposeOrb(GameObject orb)
     {
         if(orb)
@@ -100,11 +102,11 @@ public class WingTrigger : NetworkBehaviour
 
     }
 
-    public void GetPoint()
+    public void GetPoint(GameObject orb)
     {
         Debug.Log("Getting Point");
         player.GetPoint();
-
+        scoreText.text = player.score + "";
     }
 
 }

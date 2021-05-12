@@ -5,12 +5,12 @@ using Mirror;
 
 public class WingControl : NetworkBehaviour
 {
+
     public Rigidbody2D rb2d;
     public float torqueForce = 5;
     public float pushForce = 5;
     ForceMode2D forceMode2d = ForceMode2D.Force;
     public GameObject ll, lr, ul, ur;
-    [SyncVar]
     public bool llFlap, lrFlap, ulFlap, urFlap;
     public Animator llAnim = null, lrAnim = null, ulAnim = null, urAnim = null;
     
@@ -18,27 +18,23 @@ public class WingControl : NetworkBehaviour
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        //players.Add(NetworkPlayer.localPlayer);
+
+
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-    public override void OnStopServer()
-    {
-        players = new List<NetworkPlayer>();
-    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(isServer)
-        {
-            DoControls();
-        }
-      
+
+        DoControls();
+        RpcDoControls();
     }
 
-    [Command(requiresAuthority = false)]
 
     public void SetFlap(PlayerPosition pos, bool toggle)
     {
@@ -68,7 +64,66 @@ public class WingControl : NetworkBehaviour
     }
 
 
+    void RpcDoControls()
+    {
+        if (Input.GetKey("z") || llFlap)
+        {
+            print("z key was pressed");
+            ll.SetActive(true);
+            if(llAnim!=null)
+                llAnim.SetBool("isFlapping", true);
+        }
+        else
+        {
+            ll.SetActive(false);
+            if(llAnim!=null)
+                llAnim.SetBool("isFlapping", false);
 
+        }
+        if(Input.GetKey("x") || lrFlap)
+        {
+            print("x key was pressed");
+            lr.SetActive(true);
+            if(lrAnim!=null)
+                lrAnim.SetBool("isFlapping", true);
+
+        }
+        else
+        {
+            if(lrAnim!=null)
+                lrAnim.SetBool("isFlapping", false);
+
+            lr.SetActive(false);
+        }
+        if(Input.GetKey(",") || ulFlap)
+        {
+            print("< key was pressed");
+            ul.SetActive(true);
+            if(ulAnim!=null)
+                ulAnim.SetBool("isFlapping", true);
+        }
+        else
+        {
+
+            if(ulAnim!=null)
+                ulAnim.SetBool("isFlapping", false);
+            ul.SetActive(false);
+        }
+        if(Input.GetKey(".") || urFlap)
+        {
+            print("> key was pressed");
+            ur.SetActive(true);
+            if(urAnim!=null)
+                urAnim.SetBool("isFlapping", true);
+        }
+        else
+        {
+
+            if(urAnim!=null)
+                urAnim.SetBool("isFlapping", false);
+            ur.SetActive(false);
+        }
+    }
     
     [Server]
     void DoControls()

@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4779837006034372151
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4779837006034372150}
+  - component: {fileID: 4779837006034372148}
+  - component: {fileID: 4779837006034372149}
+  m_Layer: 0
+  m_Name: _GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4779837006034372150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779837006034372151}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4779837006034372148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779837006034372151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b500484e09abe24091790096def0db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angel: {fileID: 0}
+  levelManager: {fileID: 4779837006034372149}
+  globalScore: 0
+  llwCol: {fileID: 0}
+  lrwCol: {fileID: 0}
+  ulwCol: {fileID: 0}
+  urwCol: {fileID: 0}
+  llscoreText: {fileID: 0}
+  lrscoreText: {fileID: 0}
+  ulscoreText: {fileID: 0}
+  urscoreText: {fileID: 0}
+--- !u!114 &4779837006034372149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779837006034372151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f9fdadc08dfbf4faf08839dae9a7e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointOrbs: []
+  isStarted: 0
+  globalScore: 0
+  prefab_pointOrb: {fileID: 694757258180112091, guid: ffd6c4bdf4c7d9c48b8bd3c41a681e8c,
+    type: 3}
+  prefab_rock: {fileID: 4332528517898502605, guid: d3dec92262ebe774c94c8a7201b3ef88,
+    type: 3}
+  prefab_spikyball: {fileID: 7773964491595715123, guid: 639e72d9fa8ffb54ebf9ba1e9e2985b2,
+    type: 3}
+  prefab_spikyballUp: {fileID: 2370061443820726619, guid: 528455425b16d414ebe40a0f665b301f,
+    type: 3}
+  xMin: -7
+  xMax: 7
+  yMin: -3
+  yMax: 3
+  difficulty: 0
+  tutorialPts: 3
+  easyPts: 7
+  medPts: 12
+  hardPts: 20
+  hellPts: 30

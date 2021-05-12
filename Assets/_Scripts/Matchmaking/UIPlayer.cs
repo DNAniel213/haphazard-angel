@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MirrorBasics {
 
-    public class UIPlayer : MonoBehaviour {
 
-        [SerializeField] Text text;
-        Player player;
+public class UIPlayer : MonoBehaviour {
 
-        public void SetPlayer (Player player) {
-            this.player = player;
-            text.text = "Player " + player.playerIndex.ToString ();
-        }
+    [SerializeField] Text text;
+    NetworkPlayer player;
+
+    public void SetPlayer (NetworkPlayer player) {
+        this.player = player;
+        text.text = player.playerName;
 
     }
+
 }

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 309219643049005990}
   - component: {fileID: 6044993175654265736}
   - component: {fileID: 2891093980090946414}
-  - component: {fileID: 5551675993667972604}
+  - component: {fileID: 6242938063877626629}
   m_Layer: 0
   m_Name: PLAYER
-  m_TagString: Untagged
+  m_TagString: NetworkPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  matchID: 
+  playerIndex: 0
+  currentMatch:
+    matchID: 
+    publicMatch: 0
+    inMatch: 0
+    matchFull: 0
+  playerLobbyUI: {fileID: 0}
+  prefab_angel: {fileID: 5166190751728187357, guid: 63d786a94a422764683663aa1528867d,
+    type: 3}
+  pos: 4
+  wing: {fileID: 0}
+  gameManager: {fileID: 0}
+  isAlive: 1
+  score: 0
 --- !u!114 &2891093980090946414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +79,7 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &5551675993667972604
+--- !u!114 &6242938063877626629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,15 +88,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8206942288081772328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 1020a74962faada4b807ac5dc053a4cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clientAuthority: 1
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
-  compressRotation: 0
-  interpolateScale: 1
-  syncScale: 1
+  currentMatchDebug: 

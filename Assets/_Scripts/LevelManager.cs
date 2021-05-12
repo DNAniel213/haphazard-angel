@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class LevelManager : NetworkBehaviour
+public class LevelManager : MonoBehaviour
 {
+    public static LevelManager levelManager;
     public List<GameObject> pointOrbs = new List<GameObject>();
     public bool isStarted = false;
     public int globalScore = 0;
@@ -28,6 +29,16 @@ public class LevelManager : NetworkBehaviour
     public Difficulty difficulty;
     public int tutorialPts, easyPts, medPts, hardPts, hellPts;
 
+
+    private void Awake() {
+        LevelManager.levelManager = this;
+        //StartGame();
+    }
+
+    private void Start() {
+        NetworkPlayer.localPlayer.StartNetworkGame();
+
+    }
 
     public void StartGame()
     {
@@ -160,9 +171,10 @@ public class LevelManager : NetworkBehaviour
         Debug.Log("Spawning Point Orb!");
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
-        GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);
-        pointOrbs.Add(orb );
-        NetworkServer.Spawn(orb);
+        //GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);
+        NetworkPlayer.localPlayer.SpawnObjectInNetwork(pos);
+        //pointOrbs.Add(orb);
+        //NetworkServer.Spawn(orb);
 
     }
 }
