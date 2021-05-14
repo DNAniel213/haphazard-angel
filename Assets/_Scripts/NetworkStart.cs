@@ -28,7 +28,8 @@ public class NetworkStart : MonoBehaviour
 
     public void Start()
     {
-        NetworkPlayer.localPlayer.gameManager = this;
+        if(NetworkPlayer.localPlayer != null)
+            NetworkPlayer.localPlayer.gameManager = this;
         angel.transform.position= new Vector3(0,0,0);
 
 
@@ -41,7 +42,7 @@ public class NetworkStart : MonoBehaviour
             {
                 if((i + 1) == playerobj.GetComponent<NetworkPlayer>().playerIndex)
                 {
-                    playerNames[i].text = playerobj.GetComponent<NetworkPlayer>().playerName;
+                    //playerNames[i].text = playerobj.GetComponent<NetworkPlayer>().playerName;
                 }
             }
         }

@@ -61,8 +61,8 @@ public class NetworkManagerLobby : NetworkManager
         {
             Debug.Log("New Player Added");
 
-            NetworkPlayer roomPlayerInstance = Instantiate(roomPlayerPrefab);
-            NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
+            //NetworkPlayer roomPlayerInstance = Instantiate(roomPlayerPrefab);
+            //NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
     }
 

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : NetworkBehaviour
 {
-    public static LevelManager levelManager;
+    public WingControl angel = null;
     public List<GameObject> pointOrbs = new List<GameObject>();
     public bool isStarted = false;
     public int globalScore = 0;
+    private NetworkMatchChecker networkMatchChecker = null;
 
     [Header ("Prefabs")]
     public GameObject prefab_pointOrb;
@@ -31,20 +32,28 @@ public class LevelManager : MonoBehaviour
 
 
     private void Awake() {
-        LevelManager.levelManager = this;
         //StartGame();
     }
 
     private void Start() {
-        NetworkPlayer.localPlayer.StartNetworkGame();
+        networkMatchChecker = this.GetComponent<NetworkMatchChecker>();
 
+        if(NetworkPlayer.localPlayer != null)
+        {
+            NetworkPlayer.localPlayer.StartNetworkGame();
+        }
+
+        foreach(NetworkPlayer playerobj in angel.players)
+        {
+            playerobj.levelManager = this;
+        }
     }
 
     public void StartGame()
     {
         difficulty = Difficulty.TUTORIAL;
-        isStarted = true;
         RpcScoreChanged(0);
+        isStarted = true;
     }
 
     public void FixedUpdate()
@@ -171,10 +180,11 @@ public class LevelManager : MonoBehaviour
         Debug.Log("Spawning Point Orb!");
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
-        //GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);
-        NetworkPlayer.localPlayer.SpawnObjectInNetwork(pos);
-        //pointOrbs.Add(orb);
-        //NetworkServer.Spawn(orb);
+        GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);
+        //NetworkPlayer.localPlayer.SpawnObjectInNetwork(pos);
+        orb.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+        pointOrbs.Add(orb);
+        NetworkServer.Spawn(orb);
 
     }
 }

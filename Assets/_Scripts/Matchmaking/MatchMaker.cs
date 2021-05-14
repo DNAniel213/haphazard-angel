@@ -115,12 +115,13 @@ public class MatchMaker : NetworkBehaviour {
 
     public void BeginGame (string _matchID) {
         GameObject newAngel = (GameObject)Instantiate(prefab_angel);
-        NetworkServer.Spawn(newAngel);
         newAngel.GetComponent<NetworkMatchChecker>().matchId = _matchID.ToGuid();
 
         for (int i = 0; i < matches.Count; i++) {
             if (matches[i].matchID == _matchID) {
+                newAngel.GetComponent<WingControl>().currentMatch = matches[i];
                 matches[i].inMatch = true;
+
                 foreach (var player in matches[i].players) {
                     NetworkPlayer _player = player.GetComponent<NetworkPlayer> ();
                     newAngel.GetComponent<WingControl>().players.Add(player.GetComponent<NetworkPlayer>());
@@ -129,6 +130,8 @@ public class MatchMaker : NetworkBehaviour {
                 break;
             }
         }
+        NetworkServer.Spawn(newAngel);
+
     }
 
     public static string GetRandomMatchID () {

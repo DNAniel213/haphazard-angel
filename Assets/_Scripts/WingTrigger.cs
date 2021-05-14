@@ -18,6 +18,7 @@ public class WingTrigger : MonoBehaviour
     public void Start()
     {
         StartCoroutine(LateStart(0.5f));
+
     }
 
     IEnumerator LateStart(float waitTime)
@@ -42,6 +43,22 @@ public class WingTrigger : MonoBehaviour
         {
             wing.SetActive(false);
         }
+
+        if(NetworkPlayer.localPlayer != null)
+        {
+            switch(wingPosition)
+            {
+                case PlayerPosition.LLEFT : scoreText = GameObject.Find("llScore").GetComponent<Text>(); break;
+                case PlayerPosition.LRIGHT : scoreText = GameObject.Find("lrScore").GetComponent<Text>();break;
+                case PlayerPosition.ULEFT : scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
+                case PlayerPosition.URIGHT : scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
+            }
+        }
+        else
+        {
+            //this.gameObject.SetActive(false);
+        }
+
     }
 
     /// <summary>
@@ -53,12 +70,14 @@ public class WingTrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
 
-        if(other.gameObject.CompareTag("Point")  )
+        if(other.gameObject.CompareTag("Point") && NetworkPlayer.localPlayer != null)
         {   
             other.gameObject.SetActive(false);
 
+
             if(player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
                 GetPoint(other.gameObject);
+
             //CmdDisposeOrb(other.gameObject);
         }
 

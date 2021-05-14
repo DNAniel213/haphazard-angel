@@ -5,6 +5,8 @@ using Mirror;
 
 public class WingControl : NetworkBehaviour
 {
+    [SyncVar]
+    public Match currentMatch;
 
     public Rigidbody2D rb2d;
     public float torqueForce = 5;
@@ -18,9 +20,22 @@ public class WingControl : NetworkBehaviour
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         //players.Add(NetworkPlayer.localPlayer);
+        if(NetworkPlayer.localPlayer != null)
+            NetworkPlayer.localPlayer.angel = this;
+
+
+
+        foreach(NetworkPlayer playerobj in players)
+        {
+            print(playerobj.matchID + " AA " + currentMatch.matchID);
+            if(playerobj.matchID == currentMatch.matchID)
+            {
+                playerobj.angel = this;
+            }
+        }
 
 
         rb2d = GetComponent<Rigidbody2D>();

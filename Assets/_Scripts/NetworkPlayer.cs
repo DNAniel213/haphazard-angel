@@ -23,6 +23,7 @@ public class NetworkPlayer : NetworkBehaviour
     public PlayerPosition pos;
     public WingControl angel = null;
     public NetworkStart gameManager = null;
+    public LevelManager levelManager = null;
     bool isInitialized = false;
     [SyncVar]
     public bool isAlive = true;
@@ -37,7 +38,7 @@ public class NetworkPlayer : NetworkBehaviour
     {
         if (isLocalPlayer) {
             localPlayer = this;
-
+            print("Local player set");
         } else {
             Debug.Log ($"Spawning other player UI Prefab");
             playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
@@ -59,20 +60,21 @@ public class NetworkPlayer : NetworkBehaviour
 
     public void StartNetworkGame()
     {
-        if(playerIndex == 1 && isLocalPlayer)
-            LevelManager.levelManager.StartGame();
+        CmdStartGame();
     }
 
     [Command]
     void CmdStartGame()
     {
-        RpcStartGame();
+        levelManager.StartGame();
+
+        //RpcStartGame();
     }
 
     [ClientRpc]
     void RpcStartGame()
     {
-        LevelManager.levelManager.StartGame();
+        //LevelManager.levelManager.StartGame();
     }
 
 
@@ -95,7 +97,7 @@ public class NetworkPlayer : NetworkBehaviour
     [ClientRpc]
     public void RpcSpawnObjectInNetwork( Vector3 pos)
     {
-        GameObject obj = (GameObject)Instantiate(LevelManager.levelManager.prefab_pointOrb, pos,  Quaternion.identity);
+       // GameObject obj = (GameObject)Instantiate(LevelManager.levelManager.prefab_pointOrb, pos,  Quaternion.identity);
 
     }
     
@@ -131,36 +133,44 @@ public class NetworkPlayer : NetworkBehaviour
     
     public void Flap(float moveRate)
     {
-        CmdFlap(moveRate, pos, angel.transform.position, angel.transform.rotation.z, angel.rb2d.velocity, angel.rb2d.angularVelocity);
+
+        CmdFlap(moveRate);
     }
 
     [Command]
-    public void CmdFlap(float moveRate, PlayerPosition pos, Vector2 angelPos, float angelRot, Vector2 velocity, float angularVelocity)
+    public void CmdFlap(float moveRate)
     {
-        if(moveRate > 0)
-        {
-            angel.SetFlap(pos, true);
-        }
 
-        else
+        if(angel!= null)
         {
-            angel.SetFlap(pos, false);
-        }
+            if(moveRate > 0)
+            {
+                angel.SetFlap(pos, true);
+            }
 
-        RpcFlap(moveRate, pos, angelPos, angelRot, velocity, angularVelocity);
+            else
+            {
+                angel.SetFlap(pos, false);
+            }
+
+            RpcFlap(moveRate);
+        }
     }
 
     [ClientRpc]
-    public void RpcFlap(float moveRate, PlayerPosition pos, Vector2 angelPos, float angelRot, Vector2 velocity, float angularVelocity)
+    public void RpcFlap(float moveRate)
     {
-        if(moveRate > 0)
+        if(angel!= null)
         {
-            angel.SetFlap(pos, true);
-        }
+            if(moveRate > 0)
+            {
+                angel.SetFlap(pos, true);
+            }
 
-        else
-        {
-            angel.SetFlap(pos, false);
+            else
+            {
+                angel.SetFlap(pos, false);
+            }
         }
     }
     
@@ -174,7 +184,7 @@ public class NetworkPlayer : NetworkBehaviour
             case 3 : this.pos = PlayerPosition.ULEFT; break; 
             case 4 : this.pos = PlayerPosition.URIGHT; break;
         }
-        CmdSetPos();
+        //CmdSetPos();
     }
 
     [Command]
@@ -361,7 +371,6 @@ public class NetworkPlayer : NetworkBehaviour
             Debug.Log ($"MatchID: {matchID} | Beginning");
 
             SceneManager.LoadScene (1, LoadSceneMode.Additive);
-            angel = GameObject.Find("Angel(Clone)").GetComponent<WingControl>();
 
             //Additively load game scene
             //NetworkManager.singleton.ServerChangeScene("Main");
