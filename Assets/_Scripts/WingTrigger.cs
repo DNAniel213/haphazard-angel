@@ -17,7 +17,7 @@ public class WingTrigger : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine(LateStart(0.5f));
+        StartCoroutine(LateStart(1));
 
     }
 
@@ -32,11 +32,23 @@ public class WingTrigger : MonoBehaviour
         {
             NetworkPlayer p = playerobj.GetComponent<NetworkPlayer>();
             p.SetAngel();
+
             Debug.Log(p.pos + " ??? "  + wingPosition);
+
             if(p.pos == wingPosition)
             {
                 this.player = playerobj.GetComponent<NetworkPlayer>();
+                
+                switch(wingPosition)
+                {
+                    case PlayerPosition.LLEFT : p.scoreText = GameObject.Find("llScore").GetComponent<Text>(); break;
+                    case PlayerPosition.LRIGHT : p.scoreText = GameObject.Find("lrScore").GetComponent<Text>();break;
+                    case PlayerPosition.ULEFT : p.scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
+                    case PlayerPosition.URIGHT : p.scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
+                }
             }
+
+
         }
 
         if(player == null)
@@ -46,13 +58,7 @@ public class WingTrigger : MonoBehaviour
 
         if(NetworkPlayer.localPlayer != null)
         {
-            switch(wingPosition)
-            {
-                case PlayerPosition.LLEFT : scoreText = GameObject.Find("llScore").GetComponent<Text>(); break;
-                case PlayerPosition.LRIGHT : scoreText = GameObject.Find("lrScore").GetComponent<Text>();break;
-                case PlayerPosition.ULEFT : scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
-                case PlayerPosition.URIGHT : scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
-            }
+
         }
         else
         {
@@ -70,16 +76,7 @@ public class WingTrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
 
-        if(other.gameObject.CompareTag("Point") && NetworkPlayer.localPlayer != null)
-        {   
-            other.gameObject.SetActive(false);
 
-
-            if(player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
-                GetPoint(other.gameObject);
-
-            //CmdDisposeOrb(other.gameObject);
-        }
 
 
     }
@@ -90,6 +87,20 @@ public class WingTrigger : MonoBehaviour
             {
                 //CmdEliminatePlayer();
             }
+
+        if(other.gameObject.CompareTag("Point") && NetworkPlayer.localPlayer != null)
+        {   
+
+
+            if(player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
+            {
+                
+                other.gameObject.SetActive(false);
+                GetPoint(other.gameObject);
+            }
+
+            //CmdDisposeOrb(other.gameObject);
+        }
     }
 
     public void CmdEliminatePlayer()
@@ -124,8 +135,8 @@ public class WingTrigger : MonoBehaviour
     public void GetPoint(GameObject orb)
     {
         Debug.Log("Getting Point");
-        player.GetPoint();
-        scoreText.text = player.score + "";
+        player.GetPoint(orb);
     }
+
 
 }

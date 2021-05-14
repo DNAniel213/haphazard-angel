@@ -14,10 +14,11 @@ public class IrisMove : MonoBehaviour
 
     public void Start()
     {
-        //InvokeRepeating("SearchNearest", 1.0f, 1.0f);
+        InvokeRepeating("SearchNearest", 1.0f, 1.0f);
     }
     private void SearchNearest()
     {
+        print("Iris Searchign");
         if(nearestOrbTransform != null)
         {
             if(!nearestOrbTransform.gameObject.activeSelf)
@@ -28,9 +29,11 @@ public class IrisMove : MonoBehaviour
             }
 
         }
-        if(levelManager.pointOrbs.Count > 0 )
+        GameObject[] pointOrbs = GameObject.FindGameObjectsWithTag("Point");
+
+        if(pointOrbs.Length > 0 )
         {
-            foreach(GameObject orb in levelManager.pointOrbs)
+            foreach(GameObject orb in pointOrbs)
             {
                 if(orb.activeSelf)
                 {

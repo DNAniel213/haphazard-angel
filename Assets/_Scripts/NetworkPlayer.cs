@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mirror;
 
@@ -11,6 +12,9 @@ public class NetworkPlayer : NetworkBehaviour
     [SyncVar] public string matchID;
     [SyncVar] public string playerName;
     [SyncVar] public int playerIndex;
+
+    public Text scoreText;
+    public Text nameText;
 
     NetworkMatchChecker networkMatchChecker;
 
@@ -27,6 +31,7 @@ public class NetworkPlayer : NetworkBehaviour
     bool isInitialized = false;
     [SyncVar]
     public bool isAlive = true;
+    [SyncVar]
     public int score = 0;
 
     // Start is called before the first frame update
@@ -47,20 +52,24 @@ public class NetworkPlayer : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(scoreText!=null)
+            scoreText.text = score + "";
+
         if(angel == null)
         {
         }
         if(this.isLocalPlayer && this.isInitialized && this.isAlive && angel != null) 
         {
             float movement = Input.GetAxis("Fire1");
-            this.Flap(movement);
+            //this.Flap(movement);
         }
     }
 
 
     public void StartNetworkGame()
     {
-        CmdStartGame();
+        if(playerIndex == 1)
+            CmdStartGame();
     }
 
     [Command]
@@ -105,20 +114,21 @@ public class NetworkPlayer : NetworkBehaviour
 
 
 
-    public void GetPoint()
+    public void GetPoint(GameObject orb)
     {
 
         score++;
         //Debug.Log("Player Get Point " + score);
-        //CmdGetPoint();
+        CmdGetPoint(orb);
     }
     [Command]
-    public void CmdGetPoint()
+    public void CmdGetPoint(GameObject orb)
     {
         Debug.Log("CmdGetPoint " + score);
-
-        gameManager.levelManager.RpcScoreChanged(gameManager.globalScore + 1);
-        gameManager.RpcUpdateScore(this.pos, this.score);
+        score++;
+        levelManager.globalScore += 1;
+        levelManager.RpcScoreChanged();
+        levelManager.RemovePointOrb(orb);
         RpcGetPoint();
     }
 
@@ -126,54 +136,31 @@ public class NetworkPlayer : NetworkBehaviour
     public void RpcGetPoint()
     {
         Debug.Log("RpcGetPoint " + score);
-        
-        score++;
-        gameManager.RpcUpdateScore(this.pos, this.score);
+        //gameManager.RpcUpdateScore(this.pos, this.score);
     }
     
     public void Flap(float moveRate)
     {
-
         CmdFlap(moveRate);
     }
 
     [Command]
     public void CmdFlap(float moveRate)
     {
-
         if(angel!= null)
         {
             if(moveRate > 0)
             {
                 angel.SetFlap(pos, true);
             }
-
-            else
-            {
-                angel.SetFlap(pos, false);
-            }
-
-            RpcFlap(moveRate);
-        }
-    }
-
-    [ClientRpc]
-    public void RpcFlap(float moveRate)
-    {
-        if(angel!= null)
-        {
-            if(moveRate > 0)
-            {
-                angel.SetFlap(pos, true);
-            }
-
             else
             {
                 angel.SetFlap(pos, false);
             }
         }
     }
-    
+
+
     public void SetAngel()
     {
         this.isInitialized = true;
@@ -184,35 +171,7 @@ public class NetworkPlayer : NetworkBehaviour
             case 3 : this.pos = PlayerPosition.ULEFT; break; 
             case 4 : this.pos = PlayerPosition.URIGHT; break;
         }
-        //CmdSetPos();
     }
-
-    [Command]
-    public void CmdSetPos()
-    {
-        switch(playerIndex)
-        {
-            case 1 : this.pos = PlayerPosition.LLEFT; break;
-            case 2 : this.pos = PlayerPosition.LRIGHT; break;
-            case 3 : this.pos = PlayerPosition.ULEFT; break; 
-            case 4 : this.pos = PlayerPosition.URIGHT; break;
-        }
-        RpcSetPos();
-    }
-
-    [ClientRpc]
-    public void RpcSetPos()
-    {
-        switch(playerIndex)
-        {
-            case 1 : this.pos = PlayerPosition.LLEFT; break;
-            case 2 : this.pos = PlayerPosition.LRIGHT; break;
-            case 3 : this.pos = PlayerPosition.ULEFT; break; 
-            case 4 : this.pos = PlayerPosition.URIGHT; break;
-        }
-    }
-
-
 
 
 

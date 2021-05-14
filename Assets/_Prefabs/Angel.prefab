@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a00986b4079e248b45b766cde840e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelManager: {fileID: 0}
+  levelManager: {fileID: 457590453343152765}
   nearestOrb: 999
   nearestOrbTransform: {fileID: 0}
   speed: 1
@@ -2078,15 +2078,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   currentMatch:
     matchID: 
     publicMatch: 0
     inMatch: 0
     matchFull: 0
   rb2d: {fileID: 5166190751728187359}
-  torqueForce: 75
-  pushForce: 100
+  torqueForce: 1
+  pushForce: 2
   ll: {fileID: 5166190749992604084}
   lr: {fileID: 5166190751610953612}
   ul: {fileID: 5166190750704448413}
@@ -2134,7 +2134,7 @@ MonoBehaviour:
   clientAuthority: 0
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
+  localScaleSensitivity: 1
   compressRotation: 1
   interpolateScale: 1
   syncScale: 1
@@ -2155,10 +2155,10 @@ MonoBehaviour:
   target: {fileID: 5166190751728187359}
   clientAuthority: 0
   syncVelocity: 1
-  clearVelocity: 0
+  clearVelocity: 1
   velocitySensitivity: 0.01
   syncAngularVelocity: 1
-  clearAngularVelocity: 0
+  clearAngularVelocity: 1
   angularVelocitySensitivity: 0.01
 --- !u!114 &9092907875286179988
 MonoBehaviour:
@@ -2173,7 +2173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 2
   currentMatchDebug: 
 --- !u!114 &457590453343152765
 MonoBehaviour:

@@ -13,6 +13,7 @@ public class WingControl : NetworkBehaviour
     public float pushForce = 5;
     ForceMode2D forceMode2d = ForceMode2D.Force;
     public GameObject ll, lr, ul, ur;
+    [SyncVar]
     public bool llFlap, lrFlap, ulFlap, urFlap;
     public Animator llAnim = null, lrAnim = null, ulAnim = null, urAnim = null;
     
@@ -46,8 +47,8 @@ public class WingControl : NetworkBehaviour
     void FixedUpdate()
     {
 
-        DoControls();
-        RpcDoControls();
+        ServerDoControls();
+        DoFlapAnimation();
     }
 
 
@@ -79,26 +80,21 @@ public class WingControl : NetworkBehaviour
     }
 
 
-    void RpcDoControls()
+    void DoFlapAnimation()
     {
-        if (Input.GetKey("z") || llFlap)
+        if (llFlap)
         {
-            print("z key was pressed");
-            ll.SetActive(true);
             if(llAnim!=null)
                 llAnim.SetBool("isFlapping", true);
         }
         else
         {
-            ll.SetActive(false);
             if(llAnim!=null)
                 llAnim.SetBool("isFlapping", false);
 
         }
-        if(Input.GetKey("x") || lrFlap)
+        if(lrFlap)
         {
-            print("x key was pressed");
-            lr.SetActive(true);
             if(lrAnim!=null)
                 lrAnim.SetBool("isFlapping", true);
 
@@ -108,12 +104,9 @@ public class WingControl : NetworkBehaviour
             if(lrAnim!=null)
                 lrAnim.SetBool("isFlapping", false);
 
-            lr.SetActive(false);
         }
-        if(Input.GetKey(",") || ulFlap)
+        if( ulFlap)
         {
-            print("< key was pressed");
-            ul.SetActive(true);
             if(ulAnim!=null)
                 ulAnim.SetBool("isFlapping", true);
         }
@@ -122,12 +115,9 @@ public class WingControl : NetworkBehaviour
 
             if(ulAnim!=null)
                 ulAnim.SetBool("isFlapping", false);
-            ul.SetActive(false);
         }
-        if(Input.GetKey(".") || urFlap)
+        if(urFlap)
         {
-            print("> key was pressed");
-            ur.SetActive(true);
             if(urAnim!=null)
                 urAnim.SetBool("isFlapping", true);
         }
@@ -136,77 +126,103 @@ public class WingControl : NetworkBehaviour
 
             if(urAnim!=null)
                 urAnim.SetBool("isFlapping", false);
-            ur.SetActive(false);
         }
     }
     
+    
     [Server]
-    void DoControls()
+    void ServerDoControls()
     {
-        if (Input.GetKey("z") || llFlap)
+        float torque = 0;
+        Vector2 force = new Vector2(0,0);
+
+        if(Input.GetKey("z"))
+            llFlap = true;
+        else
+            llFlap = false;
+            
+        if(Input.GetKey("x"))
+            lrFlap = true;
+        else
+            lrFlap = false;
+        
+        if(Input.GetKey(","))
+            ulFlap = true;
+        else
+            ulFlap = false;
+
+        if(Input.GetKey("."))
+            urFlap = true;
+        else
+            urFlap = false;
+
+
+
+        if (llFlap)
         {
-            print("z key was pressed");
-            rb2d.AddTorque(-torqueForce * Time.deltaTime, forceMode2d);
-            rb2d.AddRelativeForce(new Vector2(-pushForce,pushForce) * Time.deltaTime, forceMode2d);
-            ll.SetActive(true);
-            if(llAnim!=null)
-                llAnim.SetBool("isFlapping", true);
+            print("Lower Left Flap!");
+            torque -= torqueForce;
+            force.x -= pushForce;
+            force.y += pushForce;
+
+            //rb2d.AddTorque(-torqueForce * Time.deltaTime, forceMode2d);
+            //rb2d.AddRelativeForce(new Vector2(-pushForce,pushForce) * Time.deltaTime, forceMode2d);
+
+
         }
         else
         {
-            ll.SetActive(false);
-            if(llAnim!=null)
-                llAnim.SetBool("isFlapping", false);
+        }
+        if(lrFlap)
+        {
+            print("Lower Right Flap");
 
-        }
-        if(Input.GetKey("x") || lrFlap)
-        {
-            print("x key was pressed");
-            rb2d.AddTorque(torqueForce * Time.deltaTime, forceMode2d);
-            rb2d.AddRelativeForce(new Vector2(pushForce,pushForce) * Time.deltaTime, forceMode2d);
-            lr.SetActive(true);
-            if(lrAnim!=null)
-                lrAnim.SetBool("isFlapping", true);
+            torque += torqueForce;
+            force.x += pushForce;
+            force.y += pushForce;
+            //rb2d.AddTorque(torqueForce * Time.deltaTime, forceMode2d);
+            //rb2d.AddRelativeForce(new Vector2(pushForce,pushForce) * Time.deltaTime, forceMode2d);
 
-        }
-        else
-        {
-            if(lrAnim!=null)
-                lrAnim.SetBool("isFlapping", false);
 
-            lr.SetActive(false);
-        }
-        if(Input.GetKey(",") || ulFlap)
-        {
-            print("< key was pressed");
-            rb2d.AddTorque(torqueForce * Time.deltaTime, forceMode2d);
-            rb2d.AddRelativeForce(new Vector2(-pushForce,-pushForce) * Time.deltaTime, forceMode2d);
-            ul.SetActive(true);
-            if(ulAnim!=null)
-                ulAnim.SetBool("isFlapping", true);
-        }
-        else
-        {
-
-            if(ulAnim!=null)
-                ulAnim.SetBool("isFlapping", false);
-            ul.SetActive(false);
-        }
-        if(Input.GetKey(".") || urFlap)
-        {
-            print("> key was pressed");
-            rb2d.AddTorque(-torqueForce * Time.deltaTime, forceMode2d);
-            rb2d.AddRelativeForce(new Vector2(pushForce,-pushForce) * Time.deltaTime, forceMode2d);
-            ur.SetActive(true);
-            if(urAnim!=null)
-                urAnim.SetBool("isFlapping", true);
         }
         else
         {
 
-            if(urAnim!=null)
-                urAnim.SetBool("isFlapping", false);
-            ur.SetActive(false);
+
         }
+        if( ulFlap)
+        {
+            print("Upper Left Flap");
+            torque += torqueForce;
+            force.x -= pushForce;
+            force.y -= pushForce;
+
+            //rb2d.AddTorque(torqueForce * Time.deltaTime, forceMode2d);
+            //rb2d.AddRelativeForce(new Vector2(-pushForce,-pushForce) * Time.deltaTime, forceMode2d);
+
+        }
+        else
+        {
+
+
+        }
+        if( urFlap)
+        {
+            print("Upper Right Flap");
+            torque -= torqueForce;
+            force.x += pushForce;
+            force.y -= pushForce;
+
+            //rb2d.AddTorque(-torqueForce * Time.deltaTime, forceMode2d);
+            //rb2d.AddRelativeForce(new Vector2(pushForce,-pushForce) * Time.deltaTime, forceMode2d);
+
+        }
+        else
+        {
+
+        }
+
+        rb2d.AddTorque(torque, forceMode2d);
+        rb2d.AddRelativeForce(force , forceMode2d);
     }
 }

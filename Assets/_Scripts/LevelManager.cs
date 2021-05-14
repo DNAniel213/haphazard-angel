@@ -49,10 +49,11 @@ public class LevelManager : NetworkBehaviour
         }
     }
 
+    [Server]
     public void StartGame()
     {
         difficulty = Difficulty.TUTORIAL;
-        RpcScoreChanged(0);
+        RpcScoreChanged();
         isStarted = true;
     }
 
@@ -63,8 +64,9 @@ public class LevelManager : NetworkBehaviour
 
         }
     }
-    public void RpcScoreChanged(int score)
+    public void RpcScoreChanged()
     {
+        int score = globalScore;
         Debug.Log("RpcScoreChanged " + score);
 
         globalScore = score;
@@ -83,7 +85,7 @@ public class LevelManager : NetworkBehaviour
             }
 
             Invoke("SpawnPointOrb", 1.2f);
-            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 20)
+            if(Random.Range(0, 100) < 2)
             {
                 Invoke("SpawnPointOrb", 2.5f);
             }
@@ -98,7 +100,7 @@ public class LevelManager : NetworkBehaviour
             }
 
             Invoke("SpawnPointOrb", 1.2f);
-            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 20)
+            if(Random.Range(0, 100) < 5)
             {
                 Invoke("SpawnPointOrb", 2.5f);
             }
@@ -113,7 +115,7 @@ public class LevelManager : NetworkBehaviour
             }
 
             Invoke("SpawnPointOrb", 1.2f);
-            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 40)
+            if(Random.Range(0, 100) < 10)
             {
                 Invoke("SpawnPointOrb", 2.5f);
             }
@@ -123,17 +125,14 @@ public class LevelManager : NetworkBehaviour
 
         }
 
+        /*
         foreach(GameObject pointOrbx in pointOrbs)
         {
-            if(!pointOrbx.activeSelf)
+            if(pointOrbx == null)
             {
-                pointOrbs.Remove(pointOrbx);
-                Destroy(pointOrbx);
-
-                break;
+                //pointOrbs.Remove(pointOrbx);
             }
-        }
-
+        }*/
     }
 
     public IEnumerator RandomSelfInvoke(Difficulty diffReq, float chance, float minDelay, float maxDelay, string func)
@@ -185,6 +184,14 @@ public class LevelManager : NetworkBehaviour
         orb.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
         pointOrbs.Add(orb);
         NetworkServer.Spawn(orb);
+
+    }
+
+    public void RemovePointOrb(GameObject orb)
+    {
+        pointOrbs.Remove(orb);
+        NetworkServer.Destroy(orb);
+        Destroy(orb);
 
     }
 }
