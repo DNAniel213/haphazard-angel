@@ -156,6 +156,8 @@ public class LevelManager : NetworkBehaviour
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), 6, -2.13236f);
         GameObject rock = (GameObject)Instantiate(prefab_rock, pos,  Quaternion.identity);
+        rock.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+
         NetworkServer.Spawn(rock);
     }
     public void SpawnSpikyBall()
@@ -170,6 +172,8 @@ public class LevelManager : NetworkBehaviour
         else
             spike = (GameObject)Instantiate(prefab_spikyballUp, pos,  Quaternion.identity);
         
+        spike.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+
         NetworkServer.Spawn(spike);
 
     }

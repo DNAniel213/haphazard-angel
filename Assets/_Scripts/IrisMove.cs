@@ -29,30 +29,34 @@ public class IrisMove : MonoBehaviour
             }
 
         }
-        GameObject[] pointOrbs = GameObject.FindGameObjectsWithTag("Point");
-
-        if(pointOrbs.Length > 0 )
-        {
-            foreach(GameObject orb in pointOrbs)
-            {
-                if(orb.activeSelf)
-                {
-                    float dist = Vector2.Distance(this.transform.position, orb.transform.position);
-                    if(dist < nearestOrb)
-                    {
-                        nearestOrb = dist;
-                        nearestOrbTransform = orb.transform;
-                    }
-                }
-
-            }
-        }
         else
         {
-            nearestOrb = 999;
-            nearestOrbTransform = null;
-            this.transform.localPosition = Vector3.zero;
+            GameObject[] pointOrbs = GameObject.FindGameObjectsWithTag("Point");
+
+            if(pointOrbs.Length > 0 )
+            {
+                foreach(GameObject orb in pointOrbs)
+                {
+                    if(orb.activeSelf)
+                    {
+                        float dist = Vector2.Distance(this.transform.position, orb.transform.position);
+                        if(dist < nearestOrb)
+                        {
+                            nearestOrb = dist;
+                            nearestOrbTransform = orb.transform;
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                nearestOrb = 999;
+                nearestOrbTransform = null;
+                this.transform.localPosition = Vector3.zero;
+            }
         }
+
 
     }
 

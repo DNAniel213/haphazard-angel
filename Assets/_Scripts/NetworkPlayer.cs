@@ -21,11 +21,12 @@ public class NetworkPlayer : NetworkBehaviour
     [SyncVar] public Match currentMatch;
 
     [SerializeField] GameObject playerLobbyUI;
-    public GameObject prefab_angel;
 
     [SyncVar]
     public PlayerPosition pos;
     public WingControl angel = null;
+    public WingTrigger wingTrigger = null;
+
     public NetworkStart gameManager = null;
     public LevelManager levelManager = null;
     bool isInitialized = false;
@@ -111,6 +112,25 @@ public class NetworkPlayer : NetworkBehaviour
     }
     
 
+    public void Die()
+    {
+        CmdDie();
+    }
+    [Command]
+    public void CmdDie()
+    {
+        RpcDie();
+        isAlive = false;
+        wingTrigger.Explode();
+    }
+
+    public void RpcDie()
+    {
+        isAlive = false;
+        wingTrigger.Explode();
+    }
+
+
 
 
 
@@ -135,6 +155,7 @@ public class NetworkPlayer : NetworkBehaviour
     [ClientRpc]
     public void RpcGetPoint()
     {
+        wingTrigger.wingAnim.SetTrigger("Bite");
         Debug.Log("RpcGetPoint " + score);
         //gameManager.RpcUpdateScore(this.pos, this.score);
     }

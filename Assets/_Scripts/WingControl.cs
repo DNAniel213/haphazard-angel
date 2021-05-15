@@ -160,7 +160,7 @@ public class WingControl : NetworkBehaviour
 
         if (llFlap)
         {
-            print("Lower Left Flap!");
+            //print("Lower Left Flap!");
             torque -= torqueForce;
             force.x -= pushForce;
             force.y += pushForce;
@@ -175,7 +175,7 @@ public class WingControl : NetworkBehaviour
         }
         if(lrFlap)
         {
-            print("Lower Right Flap");
+            //print("Lower Right Flap");
 
             torque += torqueForce;
             force.x += pushForce;
@@ -192,7 +192,7 @@ public class WingControl : NetworkBehaviour
         }
         if( ulFlap)
         {
-            print("Upper Left Flap");
+            //print("Upper Left Flap");
             torque += torqueForce;
             force.x -= pushForce;
             force.y -= pushForce;
@@ -208,7 +208,7 @@ public class WingControl : NetworkBehaviour
         }
         if( urFlap)
         {
-            print("Upper Right Flap");
+            //print("Upper Right Flap");
             torque -= torqueForce;
             force.x += pushForce;
             force.y -= pushForce;

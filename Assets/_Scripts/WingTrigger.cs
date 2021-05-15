@@ -8,6 +8,7 @@ public class WingTrigger : MonoBehaviour
 {
     public NetworkStart netStart = null;
     public NetworkPlayer player = null; 
+    public Animator wingAnim = null;
     public WingControl wingControl;
     public PlayerPosition wingPosition = PlayerPosition.NULL;
     public bool initialized = false;
@@ -33,19 +34,22 @@ public class WingTrigger : MonoBehaviour
             NetworkPlayer p = playerobj.GetComponent<NetworkPlayer>();
             p.SetAngel();
 
-            Debug.Log(p.pos + " ??? "  + wingPosition);
 
             if(p.pos == wingPosition)
             {
                 this.player = playerobj.GetComponent<NetworkPlayer>();
-                
-                switch(wingPosition)
+                player.wingTrigger =  this;
+                if(NetworkPlayer.localPlayer != null)
                 {
-                    case PlayerPosition.LLEFT : p.scoreText = GameObject.Find("llScore").GetComponent<Text>(); break;
-                    case PlayerPosition.LRIGHT : p.scoreText = GameObject.Find("lrScore").GetComponent<Text>();break;
-                    case PlayerPosition.ULEFT : p.scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
-                    case PlayerPosition.URIGHT : p.scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
+                    switch(wingPosition)
+                    {
+                        case PlayerPosition.LLEFT : p.scoreText = GameObject.Find("llScore").GetComponent<Text>(); break;
+                        case PlayerPosition.LRIGHT : p.scoreText = GameObject.Find("lrScore").GetComponent<Text>();break;
+                        case PlayerPosition.ULEFT : p.scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
+                        case PlayerPosition.URIGHT : p.scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
+                    }
                 }
+
             }
 
 
@@ -81,39 +85,46 @@ public class WingTrigger : MonoBehaviour
 
     }
 
-     private void OnCollisionEnter2D(Collision2D other) {
+    private void OnCollisionEnter2D(Collision2D other) {
 
-            if(other.gameObject.CompareTag("Spikes") && player.gameObject == NetworkClient.localPlayer.gameObject )
+
+        if(other.gameObject.CompareTag("Spikes") && player != null )
+        {
+            if(NetworkPlayer.localPlayer!=null)
             {
-                //CmdEliminatePlayer();
+                if(player.gameObject == NetworkPlayer.localPlayer.gameObject && player.isAlive)
+                {
+                    
+                    player.Die();
+                }
             }
 
-        if(other.gameObject.CompareTag("Point") && NetworkPlayer.localPlayer != null)
+            //CmdEliminatePlayer();
+        }
+
+        if(other.gameObject.CompareTag("Point") && player != null )
         {   
-
-
-            if(player.gameObject == NetworkClient.localPlayer.gameObject && player.isAlive)
+            if(NetworkPlayer.localPlayer!=null)
             {
-                
-                other.gameObject.SetActive(false);
-                GetPoint(other.gameObject);
+                if(player.gameObject == NetworkPlayer.localPlayer.gameObject && player.isAlive)
+                {
+                    other.gameObject.SetActive(false);
+                    GetPoint(other.gameObject);
+                }
             }
 
             //CmdDisposeOrb(other.gameObject);
-        }
+        }   
+        
+
     }
 
-    public void CmdEliminatePlayer()
+    public void Explode()
     {
-        RpcEliminatePlayer();
-    }
-
-    public void RpcEliminatePlayer()
-    {
-
         wing.SetActive(false);
-        player.isAlive = false;
+        print("Die");
     }
+
 
     public void CmdDisposeOrb(GameObject orb)
     {

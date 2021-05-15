@@ -602,6 +602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   netStart: {fileID: 0}
   player: {fileID: 0}
+  wingAnim: {fileID: 5166190751392860162}
   wingControl: {fileID: 5166190751728187353}
   wingPosition: 3
   initialized: 0
@@ -777,6 +778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   netStart: {fileID: 0}
   player: {fileID: 0}
+  wingAnim: {fileID: 5166190749954868704}
   wingControl: {fileID: 5166190751728187353}
   wingPosition: 1
   initialized: 0
@@ -1463,6 +1465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   netStart: {fileID: 0}
   player: {fileID: 0}
+  wingAnim: {fileID: 5166190750495666756}
   wingControl: {fileID: 5166190751728187353}
   wingPosition: 0
   initialized: 0
@@ -1863,6 +1866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   netStart: {fileID: 0}
   player: {fileID: 0}
+  wingAnim: {fileID: 5166190751231580690}
   wingControl: {fileID: 5166190751728187353}
   wingPosition: 2
   initialized: 0
@@ -2132,8 +2136,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   clientAuthority: 0
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
+  localPositionSensitivity: 0
+  localRotationSensitivity: 0
   localScaleSensitivity: 1
   compressRotation: 1
   interpolateScale: 1
@@ -2155,11 +2159,11 @@ MonoBehaviour:
   target: {fileID: 5166190751728187359}
   clientAuthority: 0
   syncVelocity: 1
-  clearVelocity: 1
-  velocitySensitivity: 0.01
+  clearVelocity: 0
+  velocitySensitivity: 0
   syncAngularVelocity: 1
-  clearAngularVelocity: 1
-  angularVelocitySensitivity: 0.01
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0
 --- !u!114 &9092907875286179988
 MonoBehaviour:
   m_ObjectHideFlags: 0
