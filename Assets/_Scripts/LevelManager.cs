@@ -5,9 +5,11 @@ using Mirror;
 
 public class LevelManager : NetworkBehaviour
 {
+    public WingControl angel = null;
     public List<GameObject> pointOrbs = new List<GameObject>();
     public bool isStarted = false;
     public int globalScore = 0;
+    private NetworkMatchChecker networkMatchChecker = null;
 
     [Header ("Prefabs")]
     public GameObject prefab_pointOrb;
@@ -29,11 +31,30 @@ public class LevelManager : NetworkBehaviour
     public int tutorialPts, easyPts, medPts, hardPts, hellPts;
 
 
+    private void Awake() {
+        //StartGame();
+    }
+
+    private void Start() {
+        networkMatchChecker = this.GetComponent<NetworkMatchChecker>();
+
+        if(NetworkPlayer.localPlayer != null)
+        {
+            NetworkPlayer.localPlayer.StartNetworkGame();
+        }
+
+        foreach(NetworkPlayer playerobj in angel.players)
+        {
+            playerobj.levelManager = this;
+        }
+    }
+
+    [Server]
     public void StartGame()
     {
         difficulty = Difficulty.TUTORIAL;
+        RpcScoreChanged();
         isStarted = true;
-        RpcScoreChanged(0);
     }
 
     public void FixedUpdate()
@@ -43,8 +64,9 @@ public class LevelManager : NetworkBehaviour
 
         }
     }
-    public void RpcScoreChanged(int score)
+    public void RpcScoreChanged()
     {
+        int score = globalScore;
         Debug.Log("RpcScoreChanged " + score);
 
         globalScore = score;
@@ -63,7 +85,7 @@ public class LevelManager : NetworkBehaviour
             }
 
             Invoke("SpawnPointOrb", 1.2f);
-            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 20)
+            if(Random.Range(0, 100) < 2)
             {
                 Invoke("SpawnPointOrb", 2.5f);
             }
@@ -78,7 +100,7 @@ public class LevelManager : NetworkBehaviour
             }
 
             Invoke("SpawnPointOrb", 1.2f);
-            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 20)
+            if(Random.Range(0, 100) < 5)
             {
                 Invoke("SpawnPointOrb", 2.5f);
             }
@@ -93,7 +115,7 @@ public class LevelManager : NetworkBehaviour
             }
 
             Invoke("SpawnPointOrb", 1.2f);
-            if(pointOrbs.Count < 3 && Random.Range(0, 100) < 40)
+            if(Random.Range(0, 100) < 10)
             {
                 Invoke("SpawnPointOrb", 2.5f);
             }
@@ -103,17 +125,14 @@ public class LevelManager : NetworkBehaviour
 
         }
 
+        /*
         foreach(GameObject pointOrbx in pointOrbs)
         {
-            if(!pointOrbx.activeSelf)
+            if(pointOrbx == null)
             {
-                pointOrbs.Remove(pointOrbx);
-                Destroy(pointOrbx);
-
-                break;
+                //pointOrbs.Remove(pointOrbx);
             }
-        }
-
+        }*/
     }
 
     public IEnumerator RandomSelfInvoke(Difficulty diffReq, float chance, float minDelay, float maxDelay, string func)
@@ -137,6 +156,8 @@ public class LevelManager : NetworkBehaviour
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), 6, -2.13236f);
         GameObject rock = (GameObject)Instantiate(prefab_rock, pos,  Quaternion.identity);
+        rock.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+
         NetworkServer.Spawn(rock);
     }
     public void SpawnSpikyBall()
@@ -151,6 +172,8 @@ public class LevelManager : NetworkBehaviour
         else
             spike = (GameObject)Instantiate(prefab_spikyballUp, pos,  Quaternion.identity);
         
+        spike.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+
         NetworkServer.Spawn(spike);
 
     }
@@ -161,8 +184,18 @@ public class LevelManager : NetworkBehaviour
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
         GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);
-        pointOrbs.Add(orb );
+        //NetworkPlayer.localPlayer.SpawnObjectInNetwork(pos);
+        orb.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+        pointOrbs.Add(orb);
         NetworkServer.Spawn(orb);
+
+    }
+
+    public void RemovePointOrb(GameObject orb)
+    {
+        pointOrbs.Remove(orb);
+        NetworkServer.Destroy(orb);
+        Destroy(orb);
 
     }
 }

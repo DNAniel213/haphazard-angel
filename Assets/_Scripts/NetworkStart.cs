@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
-public class NetworkStart : NetworkBehaviour
+public class NetworkStart : MonoBehaviour
 {
+
+    
     public GameObject angel;
     [Header("Vars")]
     public LevelManager levelManager;
@@ -17,19 +19,39 @@ public class NetworkStart : NetworkBehaviour
     [Header("Player Score Text")]
     public Text llscoreText;
     public Text lrscoreText, ulscoreText, urscoreText;
+
+    [Header("Player Names")]
+    public Text[] playerNames;
+    public Text player2Text, player3Text, player4Text;
     // Start is called before the first frame update
     
 
-    [Command(requiresAuthority = false)]
-    public void StartGame()
+    public void Start()
     {
+        if(NetworkPlayer.localPlayer != null)
+            NetworkPlayer.localPlayer.gameManager = this;
         angel.transform.position= new Vector3(0,0,0);
-        SetWingTriggers();
-        levelManager.StartGame();
+
+
+        
+        GameObject[] players = GameObject.FindGameObjectsWithTag("NetworkPlayer");
+
+        foreach(GameObject playerobj in players)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if((i + 1) == playerobj.GetComponent<NetworkPlayer>().playerIndex)
+                {
+                    //playerNames[i].text = playerobj.GetComponent<NetworkPlayer>().playerName;
+                }
+            }
+        }
+
+        //SetWingTriggers();
+        //levelManager.StartGame();
 
     }
 
-    [Command]
     public void CmdUpdateScore(PlayerPosition pos, int score)
     {
         Debug.Log("CmdUpdateScore");
@@ -58,13 +80,12 @@ public class NetworkStart : NetworkBehaviour
         }
 
     }
-
-    [ClientRpc]
+    /*
     void SetWingTriggers()
     {
         llwCol.InitWingTrigger();
         lrwCol.InitWingTrigger();
         ulwCol.InitWingTrigger();
         urwCol.InitWingTrigger();
-    }
+    }*/
 }

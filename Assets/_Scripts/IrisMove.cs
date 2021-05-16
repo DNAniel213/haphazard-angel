@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class IrisMove : NetworkBehaviour
+public class IrisMove : MonoBehaviour
 {
     // Start is called before the first frame update
     public LevelManager levelManager;
@@ -14,8 +14,8 @@ public class IrisMove : NetworkBehaviour
 
     public void Start()
     {
-        if(isServer)
-            InvokeRepeating("SearchNearest", 1.0f, 2.0f);
+        if(NetworkPlayer.localPlayer == null)
+            InvokeRepeating("SearchNearest", 1.0f, 1.0f);
     }
     private void SearchNearest()
     {
@@ -29,28 +29,34 @@ public class IrisMove : NetworkBehaviour
             }
 
         }
-        if(levelManager.pointOrbs.Count > 0 )
-        {
-            foreach(GameObject orb in levelManager.pointOrbs)
-            {
-                if(orb.activeSelf)
-                {
-                    float dist = Vector2.Distance(this.transform.position, orb.transform.position);
-                    if(dist < nearestOrb)
-                    {
-                        nearestOrb = dist;
-                        nearestOrbTransform = orb.transform;
-                    }
-                }
-
-            }
-        }
         else
         {
-            nearestOrb = 999;
-            nearestOrbTransform = null;
-            this.transform.localPosition = Vector3.zero;
+            GameObject[] pointOrbs = GameObject.FindGameObjectsWithTag("Point");
+
+            if(pointOrbs.Length > 0 )
+            {
+                foreach(GameObject orb in pointOrbs)
+                {
+                    if(orb.activeSelf)
+                    {
+                        float dist = Vector2.Distance(this.transform.position, orb.transform.position);
+                        if(dist < nearestOrb)
+                        {
+                            nearestOrb = dist;
+                            nearestOrbTransform = orb.transform;
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                nearestOrb = 999;
+                nearestOrbTransform = null;
+                this.transform.localPosition = Vector3.zero;
+            }
         }
+
 
     }
 

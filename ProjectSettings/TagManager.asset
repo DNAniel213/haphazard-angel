@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Point
   - Spikes
+  - NetworkPlayer
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Obstacles
   - Wall
   - Wings
-  - 
+  - Angel
   - 
   - 
   - 

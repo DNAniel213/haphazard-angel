@@ -11,6 +11,8 @@ public class NetworkDestroyObject : NetworkBehaviour {
     /// object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
+    /// 
+    [Server]
     void OnTriggerEnter2D(Collider2D other)
     {
         NetworkServer.Destroy(other.gameObject);

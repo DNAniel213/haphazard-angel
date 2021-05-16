@@ -11,7 +11,7 @@ public class BGHandler : MonoBehaviour {
 	
 	// Use this for initialization
 	void Awake () {
-		
+		angel = GameObject.Find("Angel(Clone)").GetComponent<WingControl>();
 	}
 	
 	// Update is called once per frame
