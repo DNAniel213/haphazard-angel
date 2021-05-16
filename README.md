@@ -3,6 +3,13 @@
 # haphazard-angel
 A cute 2-4 player game where you control one of the Angel's four wings.
 
+Website: https://dandangames.fun/  (tip BAT!)
+
+LinekdIn: https://www.linkedin.com/in/dnaniel213/
+
+GameJolt: https://gamejolt.com/@dandan-games
+
+
 ![2](https://user-images.githubusercontent.com/12960042/118398470-666c1200-b68b-11eb-8c92-22f4016fc6c4.png)
 
 
@@ -24,3 +31,5 @@ A cute 2-4 player game where you control one of the Angel's four wings.
 
 
 
+
+Sheets: https://docs.google.com/spreadsheets/d/104sALtGdnvfeMUyEbLiBUvMtadCBWdxeyxFT0UyHdII/edit?usp=sharing
