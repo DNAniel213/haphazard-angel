@@ -79,7 +79,7 @@ public class WingControl : NetworkBehaviour
 
     }
 
-
+    [Client]
     void DoFlapAnimation()
     {
         if (llFlap)

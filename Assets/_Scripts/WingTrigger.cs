@@ -121,8 +121,16 @@ public class WingTrigger : MonoBehaviour
 
     public void Explode()
     {
-        wing.SetActive(false);
+        StartCoroutine(DoExplodeAnim());
         print("Die");
+    }
+
+    public IEnumerator DoExplodeAnim()
+    {
+        wingAnim.SetTrigger("Die");
+        yield return new WaitForSeconds(1);
+        wing.SetActive(false);
+
     }
 
 

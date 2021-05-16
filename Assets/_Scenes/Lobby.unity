@@ -1152,10 +1152,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1322239084}
   - component: {fileID: 1322239083}
+  - component: {fileID: 1322239090}
   - component: {fileID: 1322239086}
   - component: {fileID: 1322239085}
   - component: {fileID: 1322239087}
   - component: {fileID: 1322239088}
+  - component: {fileID: 1322239091}
+  - component: {fileID: 1322239089}
   m_Layer: 0
   m_Name: _NetworkManagerX
   m_TagString: Untagged
@@ -1179,14 +1182,14 @@ MonoBehaviour:
   PersistNetworkManagerToOfflineScene: 1
   runInBackground: 1
   autoStartServerBuild: 1
-  serverTickRate: 64
+  serverTickRate: 30
   serverBatching: 1
   serverBatchInterval: 0
   offlineScene: 
-  onlineScene: 
-  transport: {fileID: 1322239088}
+  onlineScene: Assets/_Scenes/Lobby.unity
+  transport: {fileID: 1322239090}
   networkAddress: localhost
-  maxConnections: 64
+  maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
@@ -1201,8 +1204,6 @@ MonoBehaviour:
   - {fileID: 2370061443820726619, guid: 528455425b16d414ebe40a0f665b301f, type: 3}
   - {fileID: 7773964491595715123, guid: 639e72d9fa8ffb54ebf9ba1e9e2985b2, type: 3}
   menuScene: Assets/_Scenes/Lobby.unity
-  roomPlayerPrefab: {fileID: 6044993175654265736, guid: 9058bf33adca77840aa8bcbdf7066fa3,
-    type: 3}
 --- !u!4 &1322239084
 Transform:
   m_ObjectHideFlags: 0
@@ -1211,7 +1212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322239081}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4409893, y: -1.056789, z: -2.6298828}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1243,10 +1244,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secretHandshake: 4456550112346450656
-  serverBroadcastListenPort: 47777
+  serverBroadcastListenPort: 47799
   enableActiveDiscovery: 1
   ActiveDiscoveryInterval: 3
-  transport: {fileID: 0}
+  transport: {fileID: 1322239090}
   OnServerFound:
     m_PersistentCalls:
       m_Calls:
@@ -1268,7 +1269,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322239081}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc654f29862fc2643b948f772ebb9e68, type: 3}
   m_Name: 
@@ -1282,12 +1283,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322239081}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0110f245bfcfc7d459681f7bd9ebc590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 7778
+  port: 7777
   maxMessageSize: 16384
   handshakeMaxSize: 3000
   noDelay: 1
@@ -1301,7 +1302,69 @@ MonoBehaviour:
   sslEnabled: 0
   sslCertJson: ./cert.json
   sslProtocols: 3072
-  _logLevels: 0
+  _logLevels: 4
+--- !u!114 &1322239089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322239081}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  NoDelay: 1
+  SendTimeout: 5000
+  ReceiveTimeout: 30000
+  serverMaxMessageSize: 16384
+  serverMaxReceivesPerTick: 10000
+  serverSendQueueLimitPerConnection: 10000
+  serverReceiveQueueLimitPerConnection: 10000
+  clientMaxMessageSize: 16384
+  clientMaxReceivesPerTick: 1000
+  clientSendQueueLimit: 10000
+  clientReceiveQueueLimit: 10000
+--- !u!114 &1322239090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322239081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Port: 7777
+  NoDelay: 1
+  Interval: 10
+  FastResend: 2
+  CongestionWindow: 0
+  SendWindowSize: 4096
+  ReceiveWindowSize: 4096
+  debugLog: 1
+  statisticsGUI: 0
+  statisticsLog: 0
+--- !u!114 &1322239091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322239081}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 929e3234c7db540b899f00183fc2b1fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transports:
+  - {fileID: 1322239088}
+  - {fileID: 1322239090}
+  - {fileID: 1322239089}
 --- !u!1 &1339161141
 GameObject:
   m_ObjectHideFlags: 0

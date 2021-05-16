@@ -115,15 +115,20 @@ public class NetworkPlayer : NetworkBehaviour
     public void Die()
     {
         CmdDie();
+        isAlive = false;
+        wingTrigger.Explode();
     }
     [Command]
     public void CmdDie()
     {
         RpcDie();
         isAlive = false;
-        wingTrigger.Explode();
+        wingTrigger.wing.SetActive(false);
+        wingTrigger.gameObject.SetActive(false);
+        //wingTrigger.Explode();
     }
 
+    [ClientRpc]
     public void RpcDie()
     {
         isAlive = false;
