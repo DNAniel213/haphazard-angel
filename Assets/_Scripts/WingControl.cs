@@ -48,7 +48,8 @@ public class WingControl : NetworkBehaviour
     {
 
         ServerDoControls();
-        DoFlapAnimation();
+        if(isClient)
+            DoFlapAnimation();
     }
 
 
@@ -136,25 +137,26 @@ public class WingControl : NetworkBehaviour
         float torque = 0;
         Vector2 force = new Vector2(0,0);
 
-        if(Input.GetKey("z"))
-            llFlap = true;
-        else
-            llFlap = false;
-            
-        if(Input.GetKey("x"))
-            lrFlap = true;
-        else
-            lrFlap = false;
-        
-        if(Input.GetKey(","))
-            ulFlap = true;
-        else
-            ulFlap = false;
 
-        if(Input.GetKey("."))
-            urFlap = true;
-        else
-            urFlap = false;
+        // if(Input.GetKey("z"))
+        //     llFlap = true;
+        // else
+        //     llFlap = false;
+            
+        // if(Input.GetKey("x"))
+        //     lrFlap = true;
+        // else
+        //     lrFlap = false;
+        
+        // if(Input.GetKey(","))
+        //     ulFlap = true;
+        // else
+        //     ulFlap = false;
+
+        // if(Input.GetKey("."))
+        //     urFlap = true;
+        // else
+        //     urFlap = false;
 
 
 

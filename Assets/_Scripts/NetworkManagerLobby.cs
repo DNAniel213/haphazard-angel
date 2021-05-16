@@ -10,19 +10,12 @@ public class NetworkManagerLobby : NetworkManager
 {
     [Scene] [SerializeField] private string menuScene = string.Empty;
 
+    [Header("Room")]
+    [SerializeField] private NetworkPlayer roomPlayerPrefab = null;
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
 
-    public static GameObject pointOrb_prefab;
-
     //public override void OnStartServer() => spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
-
-    private void Start() {
-        NetworkManagerLobby.pointOrb_prefab = this.spawnPrefabs[0];
-
-    }
-
-
 
     public override void OnClientConnect(NetworkConnection conn)
     {
@@ -54,11 +47,6 @@ public class NetworkManagerLobby : NetworkManager
         }
     }
 
-    public override void OnServerReady(NetworkConnection conn)
-    {
-        Debug.Log("Client Truomg tp cpmmect Started");
-    }
-
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         base.OnServerAddPlayer(conn);
@@ -71,6 +59,4 @@ public class NetworkManagerLobby : NetworkManager
             //NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
     }
-
-
 }

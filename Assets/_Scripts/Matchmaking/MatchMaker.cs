@@ -32,6 +32,8 @@ public class SyncListMatch : SyncList<Match> { }
 
 public class MatchMaker : NetworkBehaviour {
 
+    public GameObject orbPrefab;
+    public static GameObject pointOrb_prefab;
     public static MatchMaker instance;
     public GameObject prefab_angel;
 
@@ -41,6 +43,7 @@ public class MatchMaker : NetworkBehaviour {
     [SerializeField] int maxMatchPlayers = 12;
 
     void Start () {
+        pointOrb_prefab = orbPrefab;
         instance = this;
 
     }

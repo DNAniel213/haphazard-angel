@@ -14,11 +14,11 @@ public class IrisMove : MonoBehaviour
 
     public void Start()
     {
-        InvokeRepeating("SearchNearest", 1.0f, 1.0f);
+        if(NetworkPlayer.localPlayer == null)
+            InvokeRepeating("SearchNearest", 1.0f, 1.0f);
     }
     private void SearchNearest()
     {
-        print("Iris Searchign");
         if(nearestOrbTransform != null)
         {
             if(!nearestOrbTransform.gameObject.activeSelf)

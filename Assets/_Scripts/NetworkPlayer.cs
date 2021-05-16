@@ -62,7 +62,7 @@ public class NetworkPlayer : NetworkBehaviour
         if(this.isLocalPlayer && this.isInitialized && this.isAlive && angel != null) 
         {
             float movement = Input.GetAxis("Fire1");
-            //this.Flap(movement);
+            this.Flap(movement);
         }
     }
 
@@ -97,7 +97,7 @@ public class NetworkPlayer : NetworkBehaviour
     [Command]
     public void CmdSpawnObjectInNetwork(Vector3 pos)
     {
-        GameObject obj = (GameObject)Instantiate(NetworkManagerLobby.pointOrb_prefab, pos,  Quaternion.identity);
+        GameObject obj = (GameObject)Instantiate(MatchMaker.pointOrb_prefab, pos,  Quaternion.identity);
         NetworkServer.Spawn(obj);
         obj.GetComponent<NetworkMatchChecker>().matchId = this.matchID.ToGuid();
 
