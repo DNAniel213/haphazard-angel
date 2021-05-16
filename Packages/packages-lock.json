@@ -192,13 +192,6 @@
         "com.unity.modules.ui": "1.0.0"
       }
     },
-    "com.unity.xr.legacyinputhelpers": {
-      "version": "2.1.4",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "nuget.mono-cecil": {
       "version": "0.1.6-preview",
       "depth": 1,

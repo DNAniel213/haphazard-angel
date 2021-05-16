@@ -11,6 +11,7 @@ public class BuildScript
         BuildWindowsServer();
         BuildLinuxServer();
         BuildWindowsClient();
+        BuildWebClient();
     }
 
     [MenuItem("Build/Build Server (Windows)")]
@@ -31,7 +32,7 @@ public class BuildScript
     public static void BuildLinuxServer()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Lobby.unity" };
+        buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Lobby.unity"};
         buildPlayerOptions.locationPathName = "Builds/Linux/Server/Server.x86_64";
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;
@@ -45,7 +46,7 @@ public class BuildScript
     public static void BuildWindowsClient()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Lobby.unity" };
+        buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Lobby.unity", "Assets/_Scenes/main.unity" };
         buildPlayerOptions.locationPathName = "Builds/Windows/Client/Client.exe";
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC;
@@ -53,5 +54,19 @@ public class BuildScript
         Console.WriteLine("Building Client (Windows)...");
         BuildPipeline.BuildPlayer(buildPlayerOptions);
         Console.WriteLine("Built Client (Windows).");
+    }
+
+    [MenuItem("Build/Build Client (HTML5)")]
+    public static void BuildWebClient()
+    {
+        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+        buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Lobby.unity", "Assets/_Scenes/main.unity" };
+        buildPlayerOptions.locationPathName = "Builds/Windows/Client/Client.exe";
+        buildPlayerOptions.target = BuildTarget.WebGL;
+        buildPlayerOptions.options = BuildOptions.CompressWithLz4HC;
+
+        Console.WriteLine("Building Client (Web)...");
+        BuildPipeline.BuildPlayer(buildPlayerOptions);
+        Console.WriteLine("Built Client (Web).");
     }
 }
