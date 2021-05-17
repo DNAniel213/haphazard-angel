@@ -17,7 +17,7 @@ public class WingControl : NetworkBehaviour
     public bool llFlap, lrFlap, ulFlap, urFlap;
     public Animator llAnim = null, lrAnim = null, ulAnim = null, urAnim = null;
     
-
+    [SyncVar]
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
     // Start is called before the first frame update
@@ -46,9 +46,9 @@ public class WingControl : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        ServerDoControls();
-        if(isClient)
+        if(isServer)
+            ServerDoControls();
+        else
             DoFlapAnimation();
     }
 
@@ -129,7 +129,9 @@ public class WingControl : NetworkBehaviour
                 urAnim.SetBool("isFlapping", false);
         }
     }
+
     
+
     
     [Server]
     void ServerDoControls()
@@ -138,25 +140,25 @@ public class WingControl : NetworkBehaviour
         Vector2 force = new Vector2(0,0);
 
 
-        // if(Input.GetKey("z"))
-        //     llFlap = true;
-        // else
-        //     llFlap = false;
+        if(Input.GetKey("z"))
+            llFlap = true;
+        else
+            llFlap = false;
             
-        // if(Input.GetKey("x"))
-        //     lrFlap = true;
-        // else
-        //     lrFlap = false;
+        if(Input.GetKey("x"))
+            lrFlap = true;
+        else
+            lrFlap = false;
         
-        // if(Input.GetKey(","))
-        //     ulFlap = true;
-        // else
-        //     ulFlap = false;
+        if(Input.GetKey(","))
+            ulFlap = true;
+        else
+            ulFlap = false;
 
-        // if(Input.GetKey("."))
-        //     urFlap = true;
-        // else
-        //     urFlap = false;
+        if(Input.GetKey("."))
+            urFlap = true;
+        else
+            urFlap = false;
 
 
 

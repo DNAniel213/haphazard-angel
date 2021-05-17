@@ -13,11 +13,14 @@ public class WingTrigger : MonoBehaviour
     public PlayerPosition wingPosition = PlayerPosition.NULL;
     public bool initialized = false;
     public GameObject wing = null;
+
+    public GameObject resultPanel = null;
     
     public Text scoreText = null;
 
     public void Start()
     {
+
         StartCoroutine(LateStart(1));
 
     }
@@ -27,17 +30,14 @@ public class WingTrigger : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         initialized = true;
 
-        GameObject[] players = GameObject.FindGameObjectsWithTag("NetworkPlayer");
 
-        foreach(GameObject playerobj in players)
+        foreach(NetworkPlayer p in wingControl.players)
         {
-            NetworkPlayer p = playerobj.GetComponent<NetworkPlayer>();
             p.SetAngel();
-
 
             if(p.pos == wingPosition)
             {
-                this.player = playerobj.GetComponent<NetworkPlayer>();
+                this.player = p;
                 player.wingTrigger =  this;
                 if(NetworkPlayer.localPlayer != null)
                 {
@@ -48,16 +48,37 @@ public class WingTrigger : MonoBehaviour
                         case PlayerPosition.ULEFT : p.scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
                         case PlayerPosition.URIGHT : p.scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
                     }
+
+                    switch(wingPosition)
+                    {
+                        case PlayerPosition.LLEFT : p.nameText = GameObject.Find("llName").GetComponent<Text>(); break;
+                        case PlayerPosition.LRIGHT : p.nameText = GameObject.Find("lrName").GetComponent<Text>();break;
+                        case PlayerPosition.ULEFT : p.nameText = GameObject.Find("ulName").GetComponent<Text>();break;
+                        case PlayerPosition.URIGHT : p.nameText = GameObject.Find("urName").GetComponent<Text>();break;
+                    }
+
+                    p.nameText.text = p.playerName;
+
                 }
-
             }
+        }
 
-
+        if(wingPosition == NetworkPlayer.localPlayer.pos)
+        {
+            resultPanel = GameObject.Find("ResultPanel");
+            resultPanel.SetActive(false);
         }
 
         if(player == null)
         {
             wing.SetActive(false);
+            switch(wingPosition)
+            {
+                case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
+                case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
+                case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
+                case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+            }
         }
 
         if(NetworkPlayer.localPlayer != null)
@@ -71,37 +92,41 @@ public class WingTrigger : MonoBehaviour
 
     }
 
+
+
+    public void CheckGameEnd()
+    {
+        if(wingPosition == NetworkPlayer.localPlayer.pos)
+        {
+            print("SOMEONE FUCKING DIED");
+
+            int alive = 0;
+            foreach(NetworkPlayer playerobj in wingControl.players)
+            {
+                if(playerobj.isAlive)
+                    alive++;
+            }
+
+            if(alive > 1)
+            {
+                
+            }
+            else 
+            {
+                resultPanel.SetActive(true);
+                resultPanel.GetComponent<ResultGenerator>().GenerateScores(wingControl);
+            }
+        }
+    }
+    
+
     /// <summary>
     /// Sent when another object enters a trigger collider attached to this
     /// object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
-    /// 
     void OnTriggerEnter2D(Collider2D other)
     {
-
-
-
-
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-
-
-        if(other.gameObject.CompareTag("Spikes") && player != null )
-        {
-            if(NetworkPlayer.localPlayer!=null)
-            {
-                if(player.gameObject == NetworkPlayer.localPlayer.gameObject && player.isAlive)
-                {
-                    
-                    player.Die();
-                }
-            }
-
-            //CmdEliminatePlayer();
-        }
-
         if(other.gameObject.CompareTag("Point") && player != null )
         {   
             if(NetworkPlayer.localPlayer!=null)
@@ -115,6 +140,24 @@ public class WingTrigger : MonoBehaviour
 
             //CmdDisposeOrb(other.gameObject);
         }   
+    }
+    private void OnCollisionEnter2D(Collision2D other) {
+
+
+        if(other.gameObject.CompareTag("Spikes") && player != null )
+        {
+            if(NetworkPlayer.localPlayer!=null)
+            {
+                if(player.gameObject == NetworkPlayer.localPlayer.gameObject && player.isAlive)
+                {
+                    player.Die();
+                }
+            }
+
+            //CmdEliminatePlayer();
+        }
+
+
         
 
     }
@@ -128,7 +171,8 @@ public class WingTrigger : MonoBehaviour
     public IEnumerator DoExplodeAnim()
     {
         wingAnim.SetTrigger("Die");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
+        CheckGameEnd();
         wing.SetActive(false);
 
     }
