@@ -51,7 +51,7 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if(scoreText!=null)
             scoreText.text = score + "";
@@ -170,6 +170,7 @@ public class NetworkPlayer : NetworkBehaviour
         CmdFlap(moveRate);
     }
 
+
     [Command]
     public void CmdFlap(float moveRate)
     {
@@ -186,6 +187,23 @@ public class NetworkPlayer : NetworkBehaviour
         }
     }
 
+    
+    public void ResetWingFlap()
+    {
+        CmdResetWingFlap();
+    }
+
+    [Command]
+    public void CmdResetWingFlap()
+    {
+        if(angel!= null)
+        {
+            angel.SetFlap(PlayerPosition.LLEFT, false);
+            angel.SetFlap(PlayerPosition.LRIGHT, false);
+            angel.SetFlap(PlayerPosition.ULEFT, false);
+            angel.SetFlap(PlayerPosition.URIGHT, false);
+    }
+    }
 
     public void SetAngel()
     {
@@ -201,10 +219,17 @@ public class NetworkPlayer : NetworkBehaviour
 
 
 
+    public void SaveName(string name)
+    {
+        this.playerName = name;
+        CmdSaveName(name);
+    }
 
-
-
-
+    [Command]
+    public void CmdSaveName(string name)
+    {
+        this.playerName = name;
+    }
 
     
         /* 
@@ -281,7 +306,7 @@ public class NetworkPlayer : NetworkBehaviour
             ServerDisconnect ();
         }
 
-        void ServerDisconnect () {
+        public void ServerDisconnect () {
             MatchMaker.instance.PlayerDisconnected (this, matchID);
             RpcDisconnectGame ();
             networkMatchChecker.matchId = string.Empty.ToGuid ();
@@ -292,7 +317,7 @@ public class NetworkPlayer : NetworkBehaviour
             ClientDisconnect ();
         }
 
-        void ClientDisconnect () {
+        public void ClientDisconnect () {
             if (playerLobbyUI != null) {
                 Destroy (playerLobbyUI);
             }
@@ -355,7 +380,7 @@ public class NetworkPlayer : NetworkBehaviour
         void TargetBeginGame () {
             Debug.Log ($"MatchID: {matchID} | Beginning");
 
-            SceneManager.LoadScene (1, LoadSceneMode.Additive);
+            SceneManager.LoadScene (2, LoadSceneMode.Additive);
 
             //Additively load game scene
             //NetworkManager.singleton.ServerChangeScene("Main");

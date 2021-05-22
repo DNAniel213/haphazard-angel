@@ -14,7 +14,7 @@ public class IrisMove : MonoBehaviour
 
     public void Start()
     {
-        if(NetworkPlayer.localPlayer == null)
+        if(NetworkPlayer.localPlayer != null)
             InvokeRepeating("SearchNearest", 1.0f, 1.0f);
     }
     private void SearchNearest()

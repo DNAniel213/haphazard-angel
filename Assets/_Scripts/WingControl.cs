@@ -44,7 +44,7 @@ public class WingControl : NetworkBehaviour
 
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if(isServer)
             ServerDoControls();
@@ -139,7 +139,7 @@ public class WingControl : NetworkBehaviour
         float torque = 0;
         Vector2 force = new Vector2(0,0);
 
-
+        /*
         if(Input.GetKey("z"))
             llFlap = true;
         else
@@ -159,7 +159,7 @@ public class WingControl : NetworkBehaviour
             urFlap = true;
         else
             urFlap = false;
-
+        */
 
 
         if (llFlap)

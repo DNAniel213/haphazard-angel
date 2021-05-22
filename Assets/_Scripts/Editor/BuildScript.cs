@@ -19,7 +19,7 @@ public class BuildScript
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Offline.unity" , "Assets/_Scenes/Lobby.unity"};
-        buildPlayerOptions.locationPathName = "Builds/Windows/Server/Haphazard-Angel-Server.exe";
+        buildPlayerOptions.locationPathName = "Builds/Windows/Server/HaphAngel-Server.exe";
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;
 
@@ -33,7 +33,7 @@ public class BuildScript
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Offline.unity" , "Assets/_Scenes/Lobby.unity"};
-        buildPlayerOptions.locationPathName = "Builds/Linux/Server/Haphazard-Angel-Server.x86_64";
+        buildPlayerOptions.locationPathName = "Builds/Linux/Server/HaphAngel-Server.x86_64";
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC | BuildOptions.EnableHeadlessMode;
 
@@ -47,7 +47,7 @@ public class BuildScript
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Offline.unity", "Assets/_Scenes/Lobby.unity", "Assets/_Scenes/main.unity" };
-        buildPlayerOptions.locationPathName = "Builds/Windows/Client/Haphazard-Angel-Client.exe";
+        buildPlayerOptions.locationPathName = "Builds/Windows/Client/HaphAngel-Windows-Client.exe";
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC;
 
@@ -61,7 +61,7 @@ public class BuildScript
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = new[] { "Assets/_Scenes/Offline.unity", "Assets/_Scenes/Lobby.unity", "Assets/_Scenes/main.unity" };
-        buildPlayerOptions.locationPathName = "Builds/WebGL/Client/Haphazard-Angel-Client.exe";
+        buildPlayerOptions.locationPathName = "Builds/WebGL/Client/HaphAngel-WebGL-Client";
         buildPlayerOptions.target = BuildTarget.WebGL;
         buildPlayerOptions.options = BuildOptions.CompressWithLz4HC;
 

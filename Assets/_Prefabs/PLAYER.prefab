@@ -46,20 +46,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.5
   matchID: 
   playerName: 
   playerIndex: 0
+  scoreText: {fileID: 0}
+  nameText: {fileID: 0}
   currentMatch:
     matchID: 
     publicMatch: 0
     inMatch: 0
     matchFull: 0
   playerLobbyUI: {fileID: 0}
-  prefab_angel: {fileID: 5166190751728187357, guid: 63d786a94a422764683663aa1528867d,
-    type: 3}
   pos: 4
   angel: {fileID: 0}
+  wingTrigger: {fileID: 0}
   gameManager: {fileID: 0}
   levelManager: {fileID: 0}
   isAlive: 1

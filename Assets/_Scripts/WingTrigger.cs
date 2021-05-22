@@ -20,14 +20,16 @@ public class WingTrigger : MonoBehaviour
 
     public void Start()
     {
-
-        StartCoroutine(LateStart(1));
+        StartCoroutine(LateStart(5));
 
     }
 
     IEnumerator LateStart(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime/2);
+        resultPanel = GameObject.Find("ResultPanel");
+
+        yield return new WaitForSeconds(waitTime/2);
         initialized = true;
 
 
@@ -63,22 +65,29 @@ public class WingTrigger : MonoBehaviour
             }
         }
 
-        if(wingPosition == NetworkPlayer.localPlayer.pos)
+        if(NetworkPlayer.localPlayer!=null )
         {
-            resultPanel = GameObject.Find("ResultPanel");
-            resultPanel.SetActive(false);
+            if(NetworkPlayer.localPlayer == this.player)
+            {
+                resultPanel.SetActive(false);
+            }
         }
 
-        if(player == null)
+
+        if(this.player == null)
         {
             wing.SetActive(false);
-            switch(wingPosition)
+            if(NetworkPlayer.localPlayer!=null)
             {
-                case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
-                case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
-                case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
-                case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+                switch(wingPosition)
+                {
+                    case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
+                    case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
+                    case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
+                    case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+                }
             }
+
         }
 
         if(NetworkPlayer.localPlayer != null)
@@ -89,21 +98,42 @@ public class WingTrigger : MonoBehaviour
         {
             //this.gameObject.SetActive(false);
         }
+        initialized = true;
+    }
 
+    private void Update() {
+        if(this.player == null && initialized)
+        {
+            CheckGameEnd();
+
+            if(NetworkPlayer.localPlayer!=null)
+            {
+                NetworkPlayer.localPlayer.ResetWingFlap();
+                wing.SetActive(false);
+                switch(wingPosition)
+                {
+                    case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
+                    case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
+                    case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
+                    case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+                }
+            }
+
+        }
     }
 
 
 
     public void CheckGameEnd()
     {
-        if(wingPosition == NetworkPlayer.localPlayer.pos)
+        if(NetworkPlayer.localPlayer !=null)
         {
-            print("SOMEONE FUCKING DIED");
+                print("oops someone died or disconnected");
 
             int alive = 0;
             foreach(NetworkPlayer playerobj in wingControl.players)
             {
-                if(playerobj.isAlive)
+                if(playerobj.isAlive && playerobj!=null)
                     alive++;
             }
 

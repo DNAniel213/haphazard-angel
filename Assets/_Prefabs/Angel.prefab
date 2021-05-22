@@ -611,6 +611,7 @@ MonoBehaviour:
   wingPosition: 3
   initialized: 0
   wing: {fileID: 5166190751232711108}
+  resultPanel: {fileID: 0}
   scoreText: {fileID: 0}
 --- !u!61 &5166190750665769552
 BoxCollider2D:
@@ -787,6 +788,7 @@ MonoBehaviour:
   wingPosition: 1
   initialized: 0
   wing: {fileID: 5166190751561434725}
+  resultPanel: {fileID: 0}
   scoreText: {fileID: 0}
 --- !u!61 &5166190750678060911
 BoxCollider2D:
@@ -1478,6 +1480,7 @@ MonoBehaviour:
   wingPosition: 0
   initialized: 0
   wing: {fileID: 5166190751440051304}
+  resultPanel: {fileID: 0}
   scoreText: {fileID: 0}
 --- !u!61 &5166190751454042986
 BoxCollider2D:
@@ -1879,6 +1882,7 @@ MonoBehaviour:
   wingPosition: 2
   initialized: 0
   wing: {fileID: 5166190751242775984}
+  resultPanel: {fileID: 0}
   scoreText: {fileID: 0}
 --- !u!61 &5166190751662250159
 BoxCollider2D:
@@ -2090,14 +2094,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.01
   currentMatch:
     matchID: 
     publicMatch: 0
     inMatch: 0
     matchFull: 0
   rb2d: {fileID: 5166190751728187359}
-  torqueForce: 1
+  torqueForce: 1.5
   pushForce: 2
   ll: {fileID: 5166190749992604084}
   lr: {fileID: 5166190751610953612}
@@ -2142,14 +2146,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.02
   clientAuthority: 0
-  localPositionSensitivity: 0
-  localRotationSensitivity: 0
+  localPositionSensitivity: 0.2
+  localRotationSensitivity: 0.2
   localScaleSensitivity: 1
-  compressRotation: 1
-  interpolateScale: 1
-  syncScale: 1
+  compressRotation: 0
+  interpolateScale: 0
+  syncScale: 0
 --- !u!114 &5166190751728187332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2163,15 +2167,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.02
   target: {fileID: 5166190751728187359}
   clientAuthority: 0
   syncVelocity: 1
   clearVelocity: 0
-  velocitySensitivity: 0
+  velocitySensitivity: 0.01
   syncAngularVelocity: 1
   clearAngularVelocity: 0
-  angularVelocitySensitivity: 0
+  angularVelocitySensitivity: 0.01
 --- !u!114 &9092907875286179988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2222,7 +2226,7 @@ MonoBehaviour:
   easyPts: 7
   medPts: 12
   hardPts: 20
-  hellPts: 30
+  hellPts: 50
 --- !u!114 &3351483923641105865
 MonoBehaviour:
   m_ObjectHideFlags: 0

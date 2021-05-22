@@ -9,6 +9,7 @@ public class CameraFollow : MonoBehaviour
     public Transform m_Target;
     public float m_XOffset = 0;
     public float m_YOffset = 0;
+	public Vector2 minimumBoundary, maximumBoundary;
 
 	private float margin = 0.01f;
 
@@ -23,13 +24,20 @@ public class CameraFollow : MonoBehaviour
 			float targetX = m_Target.position.x + m_XOffset;
 			float targetY = m_Target.position.y + m_YOffset;
 
-			if (Mathf.Abs(transform.position.x - targetX) > margin)
+			if (Mathf.Abs(transform.position.x - targetX) > margin )
 				targetX = Mathf.Lerp(transform.position.x, targetX, 1/m_DampTime * Time.deltaTime);
 
 			if (Mathf.Abs(transform.position.y - targetY) > margin)
 				targetY = Mathf.Lerp(transform.position.y, targetY, m_DampTime * Time.deltaTime);
             
 			transform.position = new Vector3(targetX, targetY, transform.position.z);
+
+			transform.position = new Vector3
+			(
+				Mathf.Clamp (transform.position.x, minimumBoundary.x, maximumBoundary.x),
+				Mathf.Clamp (transform.position.y, minimumBoundary.y, maximumBoundary.y),
+				transform.position.z
+			);
         }
     }
 }
