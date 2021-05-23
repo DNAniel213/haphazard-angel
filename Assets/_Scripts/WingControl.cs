@@ -5,6 +5,16 @@ using Mirror;
 
 public class WingControl : NetworkBehaviour
 {
+    [Header("Transforms")]
+    public Vector3 mostRecentPos;
+    public Vector3 prevPos;
+    public Quaternion mostRecentRot;
+    public Quaternion prevRot;
+    public Vector2 mostRecentVelocity;
+    public Vector2 prevVelocity;
+    public float mostRecentAngularVelocity;
+    public float prevAngularVelocity;
+
     [SyncVar]
     public Match currentMatch;
 
@@ -20,6 +30,9 @@ public class WingControl : NetworkBehaviour
     [SyncVar]
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
+
+
+    public float smoothSpeed = 2f;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,22 +53,92 @@ public class WingControl : NetworkBehaviour
 
 
         rb2d = GetComponent<Rigidbody2D>();
+
+        if(isServer)
+        {
+            InvokeRepeating("SendTransform", 0, NetworkManagerLobby.tickrate);
+        }
+        else
+        {
+            rb2d.interpolation = RigidbodyInterpolation2D.Extrapolate;
+        }
+    }
+
+    void SendTransform()
+    {
+        if(prevPos != transform.position)
+        {
+            RPCSendPos(transform.position);
+            prevPos = transform.position;
+        }
+
+        if(prevRot != transform.rotation)
+        {
+            RPCSendRot(transform.rotation);
+            prevRot = transform.rotation;
+        }
+
+        if(prevVelocity != rb2d.velocity)
+        {
+            RPCSendVelocity(rb2d.velocity);
+            prevVelocity = rb2d.velocity;
+        }
+
+        if(prevAngularVelocity != rb2d.angularVelocity)
+        {
+            RPCSendAngularVelocity(rb2d.angularVelocity);
+            prevAngularVelocity = rb2d.angularVelocity;
+        }
+
+    }
+
+    [ClientRpc]
+    void RPCSendPos(Vector3 pos)
+    {
+        mostRecentPos = pos;
+    }
+
+    [ClientRpc]
+    void RPCSendRot(Quaternion rot)
+    {
+        mostRecentRot = rot;
+    }
+
+    [ClientRpc]
+    void RPCSendVelocity(Vector2 vel)
+    {
+        mostRecentVelocity = vel;
+    }
+
+    [ClientRpc]
+    void RPCSendAngularVelocity(float angVel)
+    {
+        mostRecentAngularVelocity = angVel;
     }
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        ServerDoControls();
+
         if(isServer)
-            ServerDoControls();
+        {
+            
+        }
         else
+        {
             DoFlapAnimation();
+            transform.position = Vector3.Slerp(transform.position, mostRecentPos, smoothSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, mostRecentRot, smoothSpeed * Time.deltaTime);
+            rb2d.velocity = Vector2.Lerp(rb2d.velocity, mostRecentVelocity, smoothSpeed * Time.deltaTime);
+            rb2d.angularVelocity = Mathf.Lerp(rb2d.angularVelocity, mostRecentAngularVelocity, smoothSpeed * Time.deltaTime);
+        }
     }
 
 
     public void SetFlap(PlayerPosition pos, bool toggle)
     {
-
         if(toggle)
             {
                 switch(pos)
@@ -133,7 +216,7 @@ public class WingControl : NetworkBehaviour
     
 
     
-    [Server]
+    //[Server]
     void ServerDoControls()
     {
         float torque = 0;

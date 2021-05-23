@@ -2016,8 +2016,6 @@ GameObject:
   - component: {fileID: 5166190751728187352}
   - component: {fileID: 5166190751728187353}
   - component: {fileID: 5166190751728187355}
-  - component: {fileID: 5166190751728187354}
-  - component: {fileID: 5166190751728187332}
   - component: {fileID: 9092907875286179988}
   - component: {fileID: 457590453343152765}
   - component: {fileID: 3351483923641105865}
@@ -2061,7 +2059,7 @@ Rigidbody2D:
   m_AngularDrag: 1
   m_GravityScale: 0.1
   m_Material: {fileID: 6200000, guid: 97a3e4cddb8635c4eba1265f44d106bf, type: 2}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -2094,7 +2092,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.01
+  syncInterval: 0.06
+  mostRecentPos: {x: 0, y: 0, z: 0}
+  prevPos: {x: 0, y: 0, z: 0}
+  mostRecentRot: {x: 0, y: 0, z: 0, w: 0}
+  prevRot: {x: 0, y: 0, z: 0, w: 0}
+  mostRecentVelocity: {x: 0, y: 0}
+  prevVelocity: {x: 0, y: 0}
+  mostRecentAngularVelocity: 0
+  prevAngularVelocity: 0
   currentMatch:
     matchID: 
     publicMatch: 0
@@ -2116,6 +2122,7 @@ MonoBehaviour:
   ulAnim: {fileID: 5166190750495666756}
   urAnim: {fileID: 5166190749954868704}
   players: []
+  smoothSpeed: 0.5
 --- !u!114 &5166190751728187355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2133,49 +2140,6 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &5166190751728187354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5166190751728187357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.02
-  clientAuthority: 0
-  localPositionSensitivity: 0.2
-  localRotationSensitivity: 0.2
-  localScaleSensitivity: 1
-  compressRotation: 0
-  interpolateScale: 0
-  syncScale: 0
---- !u!114 &5166190751728187332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5166190751728187357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab2cbc52526ea384ba280d13cd1a57b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.02
-  target: {fileID: 5166190751728187359}
-  clientAuthority: 0
-  syncVelocity: 1
-  clearVelocity: 0
-  velocitySensitivity: 0.01
-  syncAngularVelocity: 1
-  clearAngularVelocity: 0
-  angularVelocitySensitivity: 0.01
 --- !u!114 &9092907875286179988
 MonoBehaviour:
   m_ObjectHideFlags: 0

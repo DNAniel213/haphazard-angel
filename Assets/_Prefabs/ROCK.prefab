@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4332528517898502600}
   - component: {fileID: 185464651}
   - component: {fileID: 7553538958108592131}
-  - component: {fileID: -1705764481354955194}
+  - component: {fileID: -1089915022975603985}
   m_Layer: 8
   m_Name: ROCK
   m_TagString: Untagged
@@ -194,9 +194,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 2
   currentMatchDebug: 
---- !u!114 &-1705764481354955194
+--- !u!114 &-1089915022975603985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.02
+  syncInterval: 0.2
   target: {fileID: 4332528517898502600}
   clientAuthority: 0
   syncVelocity: 1

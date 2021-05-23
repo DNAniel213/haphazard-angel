@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7773964491595715118}
   - component: {fileID: -7739789861794495667}
   - component: {fileID: -3295325003265527847}
-  - component: {fileID: -7546814475203362806}
+  - component: {fileID: -3778650682462816686}
   m_Layer: 8
   m_Name: BALLSPIKE
   m_TagString: Spikes
@@ -196,9 +196,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 2
   currentMatchDebug: 
---- !u!114 &-7546814475203362806
+--- !u!114 &-3778650682462816686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.02
+  syncInterval: 0.2
   target: {fileID: 7773964491595715119}
   clientAuthority: 0
   syncVelocity: 1

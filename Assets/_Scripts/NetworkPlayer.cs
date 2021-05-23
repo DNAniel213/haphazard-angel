@@ -61,16 +61,27 @@ public class NetworkPlayer : NetworkBehaviour
         }
         if(this.isLocalPlayer && this.isInitialized && this.isAlive && angel != null) 
         {
-            float movement = Input.GetAxis("Fire1");
-            this.Flap(movement);
         }
     }
 
 
+
+
     public void StartNetworkGame()
     {
+        InvokeRepeating("FlapSync", 0, NetworkManagerLobby.tickrate);
         if(playerIndex == 1)
             CmdStartGame();
+    }
+
+    public void FlapSync()
+    {
+        if(this.isLocalPlayer && this.isInitialized && this.isAlive && angel != null) 
+        {
+            float movement = Input.GetAxis("Fire1");
+            this.Flap(movement);
+        }
+
     }
 
     [Command]
