@@ -71,6 +71,7 @@ public class LevelManager : NetworkBehaviour
 
         globalScore = score;
 
+
         if(globalScore < tutorialPts)
         {
             difficulty = Difficulty.TUTORIAL;
@@ -81,7 +82,7 @@ public class LevelManager : NetworkBehaviour
             if(difficulty != Difficulty.EASY)
             {
                 difficulty = Difficulty.EASY;
-                StartCoroutine(RandomSelfInvoke(Difficulty.EASY, 50, 5, 8, "SpawnRock"));
+                StartCoroutine(RandomSelfInvoke(Difficulty.EASY, 30, 4, 12, "SpawnRock"));
             }
 
             Invoke("SpawnPointOrb", 1.2f);
@@ -95,7 +96,7 @@ public class LevelManager : NetworkBehaviour
             if(difficulty != Difficulty.MEDIOCRE)
             {
                 difficulty = Difficulty.MEDIOCRE;
-                StartCoroutine(RandomSelfInvoke(Difficulty.MEDIOCRE, 80, 7, 10, "SpawnRock"));
+                StartCoroutine(RandomSelfInvoke(Difficulty.MEDIOCRE, 50, 3, 13, "SpawnRock"));
                 StartCoroutine(RandomSelfInvoke(Difficulty.MEDIOCRE, 30, 9, 20, "SpawnSpikyBall"));
             }
 
@@ -110,8 +111,24 @@ public class LevelManager : NetworkBehaviour
             if(difficulty != Difficulty.HARD)
             {
                 difficulty = Difficulty.HARD;
-                StartCoroutine(RandomSelfInvoke(Difficulty.HARD, 100, 1, 10, "SpawnRock"));
-                StartCoroutine(RandomSelfInvoke(Difficulty.HARD, 100, 7, 20, "SpawnSpikyBall"));
+                StartCoroutine(RandomSelfInvoke(Difficulty.HARD, 80, 2, 15, "SpawnRock"));
+                StartCoroutine(RandomSelfInvoke(Difficulty.HARD, 50, 7, 17, "SpawnSpikyBall"));
+            }
+
+            Invoke("SpawnPointOrb", 1.2f);
+            if(Random.Range(0, 100) < 8)
+            {
+                Invoke("SpawnPointOrb", 2.5f);
+            }
+        }
+        else if (globalScore < hellPts)
+        {
+            if(difficulty != Difficulty.HELL)
+            {
+                difficulty = Difficulty.HELL;
+                StartCoroutine(RandomSelfInvoke(Difficulty.HELL, 100, 2, 12, "SpawnRock"));
+                StartCoroutine(RandomSelfInvoke(Difficulty.HELL, 80, 4, 12, "SpawnSpikyBall"));
+                StartCoroutine(RandomSelfInvoke(Difficulty.HELL, 30, 9, 20, "SpawnGroundSpike"));
             }
 
             Invoke("SpawnPointOrb", 1.2f);
@@ -120,10 +137,7 @@ public class LevelManager : NetworkBehaviour
                 Invoke("SpawnPointOrb", 2.5f);
             }
         }
-        else if (globalScore < hellPts)
-        {
 
-        }
 
         /*
         foreach(GameObject pointOrbx in pointOrbs)
@@ -134,6 +148,7 @@ public class LevelManager : NetworkBehaviour
             }
         }*/
     }
+
 
     public IEnumerator RandomSelfInvoke(Difficulty diffReq, float chance, float minDelay, float maxDelay, string func)
     {
@@ -160,6 +175,7 @@ public class LevelManager : NetworkBehaviour
 
         NetworkServer.Spawn(rock);
     }
+
     public void SpawnSpikyBall()
     {
         Debug.Log("Spawning Spiky Ball!");
@@ -175,6 +191,12 @@ public class LevelManager : NetworkBehaviour
         spike.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
 
         NetworkServer.Spawn(spike);
+
+    }    
+    
+    public void SpawnGroundSpike()
+    {
+
 
     }
     

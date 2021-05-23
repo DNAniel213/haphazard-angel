@@ -57,7 +57,7 @@ public class MatchMaker : NetworkBehaviour {
             matches.Add (match);
             Debug.Log ($"Match generated");
             _player.GetComponent<NetworkPlayer> ().currentMatch = match;
-            _player.GetComponent<NetworkPlayer> ().playerName = PlayerPrefs.GetString("PlayerName");
+            //_player.GetComponent<NetworkPlayer> ().playerName = PlayerPrefs.GetString("PlayerName");
             playerIndex = 1;
             return true;
         } else {
@@ -76,7 +76,7 @@ public class MatchMaker : NetworkBehaviour {
                     if (!matches[i].inMatch && !matches[i].matchFull) {
                         matches[i].players.Add (_player);
                         _player.GetComponent<NetworkPlayer> ().currentMatch = matches[i];
-                        _player.GetComponent<NetworkPlayer> ().playerName = PlayerPrefs.GetString("PlayerName");
+                        //_player.GetComponent<NetworkPlayer> ().playerName = PlayerPrefs.GetString("PlayerName");
 
                         playerIndex = matches[i].players.Count; 
 

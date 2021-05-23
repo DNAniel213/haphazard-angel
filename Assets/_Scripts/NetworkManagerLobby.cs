@@ -14,6 +14,7 @@ public class NetworkManagerLobby : NetworkManager
     [SerializeField] private NetworkPlayer roomPlayerPrefab = null;
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
+    public static float tickrate = 0.2f;
 
     //public override void OnStartServer() => spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
 
@@ -26,7 +27,9 @@ public class NetworkManagerLobby : NetworkManager
 
     public override void OnClientDisconnect(NetworkConnection conn)
     {
+
         base.OnClientDisconnect(conn);
+        Debug.Log(conn.clientOwnedObjects);
         OnClientDisconnected?.Invoke();
     }
 

@@ -25,6 +25,7 @@ public class UILobby : MonoBehaviour {
     [SerializeField] GameObject UIPlayerPrefab;
     [SerializeField] Text matchIDText;
     [SerializeField] GameObject beginGameButton;
+    [SerializeField] GameObject spectateCheck;
     private const string PlayerPrefsNameKey = "PlayerName";
 
     GameObject localPlayerLobbyUI;
@@ -41,7 +42,7 @@ public class UILobby : MonoBehaviour {
     {
         if(!PlayerPrefs.HasKey(PlayerPrefsNameKey)) { return; }
 
-        string defaultName = PlayerPrefs.GetString(PlayerPrefsNameKey);
+        string defaultName = PlayerPrefs.GetString("PlayerName");
 
         nameInputField.text= defaultName;
     }
@@ -51,21 +52,23 @@ public class UILobby : MonoBehaviour {
     public void SavePlayerName()
     {
         PlayerPrefs.SetString(PlayerPrefsNameKey, nameInputField.text);
-        NetworkPlayer.localPlayer.playerName = nameInputField.text;
+        NetworkPlayer.localPlayer.SaveName(nameInputField.text);
+        //NetworkPlayer.localPlayer.playerName = nameInputField.text;
+        PlayerPrefs.Save();
     }
 
     public void HostPublic () {
         lobbySelectables.ForEach (x => x.interactable = false);
+        SavePlayerName();
 
         NetworkPlayer.localPlayer.HostGame (true);
-        SavePlayerName();
     }
 
     public void HostPrivate () {
         lobbySelectables.ForEach (x => x.interactable = false);
+        SavePlayerName();
 
         NetworkPlayer.localPlayer.HostGame (false);
-        SavePlayerName();
     }
 
     public void HostSuccess (bool success, string matchID) {
@@ -76,6 +79,7 @@ public class UILobby : MonoBehaviour {
             localPlayerLobbyUI = SpawnPlayerUIPrefab (NetworkPlayer.localPlayer);
             matchIDText.text = matchID;
             beginGameButton.SetActive (true);
+            spectateCheck.SetActive(true);
         } else {
             lobbySelectables.ForEach (x => x.interactable = true);
         }
@@ -83,9 +87,9 @@ public class UILobby : MonoBehaviour {
 
     public void Join () {
         lobbySelectables.ForEach (x => x.interactable = false);
+        SavePlayerName();
 
         NetworkPlayer.localPlayer.JoinGame (joinMatchInput.text.ToUpper ());
-        SavePlayerName();
     }
 
     public void JoinSuccess (bool success, string matchID) {
@@ -120,15 +124,18 @@ public class UILobby : MonoBehaviour {
     public void BeginGame () {
         NetworkPlayer.localPlayer.BeginGame ();
         lobbyCanvas.enabled = false;
+        beginGameButton.SetActive (false);
     }
 
     public void SearchGame () {
-        StartCoroutine (Searching ());
         SavePlayerName();
+        StartCoroutine (Searching ());
     }
 
     public void CancelSearchGame () {
         searching = false;
+        spectateCheck.SetActive(false);
+
     }
 
     public void SearchGameSuccess (bool success, string matchID) {

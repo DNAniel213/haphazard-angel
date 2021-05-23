@@ -13,31 +13,33 @@ public class WingTrigger : MonoBehaviour
     public PlayerPosition wingPosition = PlayerPosition.NULL;
     public bool initialized = false;
     public GameObject wing = null;
+
+    public GameObject resultPanel = null;
     
     public Text scoreText = null;
 
     public void Start()
     {
-        StartCoroutine(LateStart(1));
+        StartCoroutine(LateStart(5));
 
     }
 
     IEnumerator LateStart(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime/2);
+        resultPanel = GameObject.Find("ResultPanel");
+
+        yield return new WaitForSeconds(waitTime/2);
         initialized = true;
 
-        GameObject[] players = GameObject.FindGameObjectsWithTag("NetworkPlayer");
 
-        foreach(GameObject playerobj in players)
+        foreach(NetworkPlayer p in wingControl.players)
         {
-            NetworkPlayer p = playerobj.GetComponent<NetworkPlayer>();
             p.SetAngel();
-
 
             if(p.pos == wingPosition)
             {
-                this.player = playerobj.GetComponent<NetworkPlayer>();
+                this.player = p;
                 player.wingTrigger =  this;
                 if(NetworkPlayer.localPlayer != null)
                 {
@@ -48,16 +50,44 @@ public class WingTrigger : MonoBehaviour
                         case PlayerPosition.ULEFT : p.scoreText = GameObject.Find("ulScore").GetComponent<Text>();break;
                         case PlayerPosition.URIGHT : p.scoreText = GameObject.Find("urScore").GetComponent<Text>();break;
                     }
+
+                    switch(wingPosition)
+                    {
+                        case PlayerPosition.LLEFT : p.nameText = GameObject.Find("llName").GetComponent<Text>(); break;
+                        case PlayerPosition.LRIGHT : p.nameText = GameObject.Find("lrName").GetComponent<Text>();break;
+                        case PlayerPosition.ULEFT : p.nameText = GameObject.Find("ulName").GetComponent<Text>();break;
+                        case PlayerPosition.URIGHT : p.nameText = GameObject.Find("urName").GetComponent<Text>();break;
+                    }
+
+                    p.nameText.text = p.playerName;
+
                 }
-
             }
-
-
         }
 
-        if(player == null)
+        if(NetworkPlayer.localPlayer!=null )
+        {
+            if(NetworkPlayer.localPlayer == this.player)
+            {
+                resultPanel.SetActive(false);
+            }
+        }
+
+
+        if(this.player == null)
         {
             wing.SetActive(false);
+            if(NetworkPlayer.localPlayer!=null)
+            {
+                switch(wingPosition)
+                {
+                    case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
+                    case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
+                    case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
+                    case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+                }
+            }
+
         }
 
         if(NetworkPlayer.localPlayer != null)
@@ -68,40 +98,65 @@ public class WingTrigger : MonoBehaviour
         {
             //this.gameObject.SetActive(false);
         }
-
+        initialized = true;
     }
+
+    private void Update() {
+        if(this.player == null && initialized)
+        {
+            CheckGameEnd();
+
+            if(NetworkPlayer.localPlayer!=null)
+            {
+                NetworkPlayer.localPlayer.ResetWingFlap();
+                wing.SetActive(false);
+                switch(wingPosition)
+                {
+                    case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
+                    case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
+                    case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
+                    case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+                }
+            }
+
+        }
+    }
+
+
+
+    public void CheckGameEnd()
+    {
+        if(NetworkPlayer.localPlayer !=null)
+        {
+                print("oops someone died or disconnected");
+
+            int alive = 0;
+            foreach(NetworkPlayer playerobj in wingControl.players)
+            {
+                if(playerobj.isAlive && playerobj!=null)
+                    alive++;
+            }
+
+            if(alive > 1)
+            {
+                
+            }
+            else 
+            {
+                resultPanel.SetActive(true);
+                resultPanel.GetComponent<ResultGenerator>().GenerateScores(wingControl);
+            }
+        }
+    }
+    
 
     /// <summary>
     /// Sent when another object enters a trigger collider attached to this
     /// object (2D physics only).
     /// </summary>
     /// <param name="other">The other Collider2D involved in this collision.</param>
-    /// 
     void OnTriggerEnter2D(Collider2D other)
     {
-
-
-
-
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-
-
-        if(other.gameObject.CompareTag("Spikes") && player != null )
-        {
-            if(NetworkPlayer.localPlayer!=null)
-            {
-                if(player.gameObject == NetworkPlayer.localPlayer.gameObject && player.isAlive)
-                {
-                    
-                    player.Die();
-                }
-            }
-
-            //CmdEliminatePlayer();
-        }
-
         if(other.gameObject.CompareTag("Point") && player != null )
         {   
             if(NetworkPlayer.localPlayer!=null)
@@ -115,6 +170,24 @@ public class WingTrigger : MonoBehaviour
 
             //CmdDisposeOrb(other.gameObject);
         }   
+    }
+    private void OnCollisionEnter2D(Collision2D other) {
+
+
+        if(other.gameObject.CompareTag("Spikes") && player != null )
+        {
+            if(NetworkPlayer.localPlayer!=null)
+            {
+                if(player.gameObject == NetworkPlayer.localPlayer.gameObject && player.isAlive)
+                {
+                    player.Die();
+                }
+            }
+
+            //CmdEliminatePlayer();
+        }
+
+
         
 
     }
@@ -128,7 +201,8 @@ public class WingTrigger : MonoBehaviour
     public IEnumerator DoExplodeAnim()
     {
         wingAnim.SetTrigger("Die");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
+        CheckGameEnd();
         wing.SetActive(false);
 
     }
