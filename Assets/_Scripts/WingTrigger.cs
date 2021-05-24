@@ -143,6 +143,7 @@ public class WingTrigger : MonoBehaviour
             }
             else 
             {
+                wingControl.DestroyAngel();
                 resultPanel.SetActive(true);
                 resultPanel.GetComponent<ResultGenerator>().GenerateScores(wingControl);
             }

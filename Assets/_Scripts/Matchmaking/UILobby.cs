@@ -11,6 +11,11 @@ public class UILobby : MonoBehaviour {
 
     public static UILobby instance;
 
+    [Header("Start")]
+    public GameObject landingUI;
+    public GameObject hostUI;
+    public GameObject joinUI;
+
     [Header ("Host Join")]
     [SerializeField] InputField joinMatchInput;
     [SerializeField] InputField nameInputField;
@@ -35,7 +40,31 @@ public class UILobby : MonoBehaviour {
         SetUpInputField();
         SceneManager.sceneLoaded += OnSceneLoaded;
 
+        landingUI.SetActive(true);
+
     }
+
+    public void SwitchToHostUI()
+    {
+        landingUI.SetActive(false);
+        hostUI.SetActive(true);
+    }
+
+    public void SwitchToJoinUI()
+    {
+        landingUI.SetActive(false);
+        joinUI.SetActive(true);
+    }
+
+    public void Back()
+    {
+        landingUI.SetActive(true);
+        joinUI.SetActive(false);
+        hostUI.SetActive(false);
+
+    }
+
+
 
 
     private void SetUpInputField()
