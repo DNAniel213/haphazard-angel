@@ -213,6 +213,18 @@ public class WingControl : NetworkBehaviour
         }
     }
 
+    public void DestroyAngel()
+    {
+        CmdDestroyAngel();
+        Destroy(this.gameObject);
+    }
+
+    [Command]
+    public void CmdDestroyAngel()
+    {
+        NetworkServer.Destroy(this.gameObject);
+    }
+
     
 
     
