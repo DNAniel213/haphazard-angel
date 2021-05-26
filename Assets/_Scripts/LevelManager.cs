@@ -55,19 +55,17 @@ public class LevelManager : NetworkBehaviour
         difficulty = Difficulty.TUTORIAL;
         RpcScoreChanged();
         isStarted = true;
+
+        xMin += angel.transform.position.x;
+        xMax += angel.transform.position.x;
+
+
     }
 
-    public void FixedUpdate()
-    {
-        if(isStarted)
-        {
 
-        }
-    }
     public void RpcScoreChanged()
     {
         int score = globalScore;
-        Debug.Log("RpcScoreChanged " + score);
 
         globalScore = score;
 
@@ -152,7 +150,6 @@ public class LevelManager : NetworkBehaviour
 
     public IEnumerator RandomSelfInvoke(Difficulty diffReq, float chance, float minDelay, float maxDelay, string func)
     {
-        Debug.Log("Random Self Invoke for " + func);
         if(this.difficulty == diffReq)
         {
             if(Random.Range(0, 100) < chance)
@@ -167,7 +164,6 @@ public class LevelManager : NetworkBehaviour
 
     public void SpawnRock()
     {
-        Debug.Log("Spawning Rock!");
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), 6, -2.13236f);
         GameObject rock = (GameObject)Instantiate(prefab_rock, pos,  Quaternion.identity);
@@ -178,7 +174,6 @@ public class LevelManager : NetworkBehaviour
 
     public void SpawnSpikyBall()
     {
-        Debug.Log("Spawning Spiky Ball!");
         bool direction = Random.Range(0, 100) < 25 ? false : true;
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), direction ? 6 : -6, -2.13236f);
         GameObject spike = null;
@@ -202,7 +197,6 @@ public class LevelManager : NetworkBehaviour
     
     public void SpawnPointOrb()
     {
-        Debug.Log("Spawning Point Orb!");
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
         GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);

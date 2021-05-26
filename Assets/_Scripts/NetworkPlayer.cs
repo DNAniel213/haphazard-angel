@@ -29,7 +29,7 @@ public class NetworkPlayer : NetworkBehaviour
 
     public NetworkStart gameManager = null;
     public LevelManager levelManager = null;
-    bool isInitialized = false;
+    public bool isInitialized = false;
     [SyncVar]
     public bool isAlive = true;
     [SyncVar]
@@ -44,24 +44,15 @@ public class NetworkPlayer : NetworkBehaviour
     {
         if (isLocalPlayer) {
             localPlayer = this;
-            print("Local player set");
         } else {
-            Debug.Log ($"Spawning other player UI Prefab");
             playerLobbyUI = UILobby.instance.SpawnPlayerUIPrefab (this);
         }
-    }
-    // Update is called once per frame
-    void Update()
+    }    
+    
+    void FixedUpdate()
     {
         if(scoreText!=null)
             scoreText.text = score + "";
-
-        if(angel == null)
-        {
-        }
-        if(this.isLocalPlayer && this.isInitialized && this.isAlive && angel != null) 
-        {
-        }
     }
 
 
@@ -154,13 +145,11 @@ public class NetworkPlayer : NetworkBehaviour
     {
 
         score++;
-        //Debug.Log("Player Get Point " + score);
         CmdGetPoint(orb);
     }
     [Command]
     public void CmdGetPoint(GameObject orb)
     {
-        Debug.Log("CmdGetPoint " + score);
         score++;
         levelManager.globalScore += 1;
         levelManager.RpcScoreChanged();
@@ -172,12 +161,11 @@ public class NetworkPlayer : NetworkBehaviour
     public void RpcGetPoint()
     {
         wingTrigger.wingAnim.SetTrigger("Bite");
-        Debug.Log("RpcGetPoint " + score);
         //gameManager.RpcUpdateScore(this.pos, this.score);
     }
     
     public void Flap(float moveRate)
-    {
+    {  
         CmdFlap(moveRate);
     }
 
@@ -334,6 +322,15 @@ public class NetworkPlayer : NetworkBehaviour
             }
         }
 
+        /*
+            LIST MATCHES
+        */
+
+        public void GetMatchList()
+        {
+            
+        }
+
         /* 
             SEARCH MATCH
         */
@@ -392,27 +389,6 @@ public class NetworkPlayer : NetworkBehaviour
             Debug.Log ($"MatchID: {matchID} | Beginning");
 
             SceneManager.LoadScene (2, LoadSceneMode.Additive);
-
-            //Additively load game scene
-            //NetworkManager.singleton.ServerChangeScene("Main");
-            //LevelManager.levelManager.StartGame();
-            /*if(isLocalPlayer)
-            {
-                print("HII AM LOCAL");
-                this.wing = GameObject.Find("Angel").GetComponent<WingControl>();
-                gameManager = GameObject.Find("_GameManager").GetComponent<NetworkStart>();
-                this.wing.players.Add(this);        
-                switch(wing.players.Count)
-                {
-                    case 1 : pos = PlayerPosition.LLEFT; break;
-                    case 2 : pos = PlayerPosition.LRIGHT; break;
-                    case 3 : pos = PlayerPosition.ULEFT; break; 
-                    case 4 : pos = PlayerPosition.URIGHT; break;
-                }
-                if(this.wing != null)
-                    this.isInitialized = true;
-                //SceneManager.LoadScene (1, LoadSceneMode.Additive);
-            }*/
 
         }
 

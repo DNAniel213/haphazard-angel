@@ -30,7 +30,7 @@ public class NetworkStart : MonoBehaviour
     {
         if(NetworkPlayer.localPlayer != null)
             NetworkPlayer.localPlayer.gameManager = this;
-        angel.transform.position= new Vector3(0,0,0);
+        //angel.transform.position= new Vector3(0,0,0);
 
 
         
@@ -54,7 +54,6 @@ public class NetworkStart : MonoBehaviour
 
     public void CmdUpdateScore(PlayerPosition pos, int score)
     {
-        Debug.Log("CmdUpdateScore");
         globalScore++;
         switch(pos)
         {
@@ -67,7 +66,6 @@ public class NetworkStart : MonoBehaviour
 
     public void RpcUpdateScore(PlayerPosition pos, int score)
     {
-        Debug.Log("RpcUpdateScore");
 
         globalScore++;
         //levelManager.RpcScoreChanged(globalScore);

@@ -5,6 +5,7 @@ using Mirror;
 
 public class WingControl : NetworkBehaviour
 {
+
     [Header("Transforms")]
     public Vector3 mostRecentPos;
     public Vector3 prevPos;
@@ -14,6 +15,10 @@ public class WingControl : NetworkBehaviour
     public Vector2 prevVelocity;
     public float mostRecentAngularVelocity;
     public float prevAngularVelocity;
+
+    [Header("Instance Location")]
+    public Vector3 gamePos;
+    public GameObject borderPrefab;
 
     [SyncVar]
     public Match currentMatch;
@@ -31,37 +36,39 @@ public class WingControl : NetworkBehaviour
     public List<NetworkPlayer> players = new List<NetworkPlayer>();
 
 
+    [Header("Tick Updates")]
+    float torque = 0;
+    Vector2 force = new Vector2(0,0);
+    public float smoothSpeed = 100f;
 
-    public float smoothSpeed = 2f;
     // Start is called before the first frame update
     void Start()
     {
-        //players.Add(NetworkPlayer.localPlayer);
         if(NetworkPlayer.localPlayer != null)
             NetworkPlayer.localPlayer.angel = this;
 
-
-
         foreach(NetworkPlayer playerobj in players)
         {
-            print(playerobj.matchID + " AA " + currentMatch.matchID);
             if(playerobj.matchID == currentMatch.matchID)
             {
                 playerobj.angel = this;
             }
         }
 
-
         rb2d = GetComponent<Rigidbody2D>();
 
         if(isServer)
         {
-            InvokeRepeating("SendTransform", 0, NetworkManagerLobby.tickrate);
+            //gamePos = new Vector3(NetworkManagerLobby.gameIndex * 40, 0, 0); 
+            //transform.position = gamePos;
+            Instantiate(borderPrefab, transform.position, Quaternion.identity);
+            InvokeRepeating("SendTransform", 0.01f, NetworkManagerLobby.tickrate);
         }
         else
         {
             rb2d.interpolation = RigidbodyInterpolation2D.Extrapolate;
         }
+
     }
 
     void SendTransform()
@@ -89,7 +96,6 @@ public class WingControl : NetworkBehaviour
             RPCSendAngularVelocity(rb2d.angularVelocity);
             prevAngularVelocity = rb2d.angularVelocity;
         }
-
     }
 
     [ClientRpc]
@@ -120,19 +126,19 @@ public class WingControl : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        ServerDoControls();
 
         if(isServer)
         {
+            ServerDoControls();
             
         }
         else
         {
             DoFlapAnimation();
-            transform.position = Vector3.Slerp(transform.position, mostRecentPos, smoothSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, mostRecentRot, smoothSpeed * Time.deltaTime);
-            rb2d.velocity = Vector2.Lerp(rb2d.velocity, mostRecentVelocity, smoothSpeed * Time.deltaTime);
-            rb2d.angularVelocity = Mathf.Lerp(rb2d.angularVelocity, mostRecentAngularVelocity, smoothSpeed * Time.deltaTime);
+            transform.SetPositionAndRotation(Vector3.Lerp(transform.position, mostRecentPos, smoothSpeed * Time.deltaTime),
+                                              Quaternion.Lerp(transform.rotation, mostRecentRot, smoothSpeed * Time.deltaTime));
+            rb2d.velocity = Vector2.Lerp(rb2d.velocity, mostRecentVelocity, smoothSpeed * Time.deltaTime * 2);
+            rb2d.angularVelocity = Mathf.Lerp(rb2d.angularVelocity, mostRecentAngularVelocity, smoothSpeed * Time.deltaTime * 2);
         }
     }
 
@@ -187,7 +193,6 @@ public class WingControl : NetworkBehaviour
         {
             if(lrAnim!=null)
                 lrAnim.SetBool("isFlapping", false);
-
         }
         if( ulFlap)
         {
@@ -225,37 +230,13 @@ public class WingControl : NetworkBehaviour
         NetworkServer.Destroy(this.gameObject);
     }
 
-    
 
-    
+        
     //[Server]
     void ServerDoControls()
     {
-        float torque = 0;
-        Vector2 force = new Vector2(0,0);
-
-        /*
-        if(Input.GetKey("z"))
-            llFlap = true;
-        else
-            llFlap = false;
-            
-        if(Input.GetKey("x"))
-            lrFlap = true;
-        else
-            lrFlap = false;
-        
-        if(Input.GetKey(","))
-            ulFlap = true;
-        else
-            ulFlap = false;
-
-        if(Input.GetKey("."))
-            urFlap = true;
-        else
-            urFlap = false;
-        */
-
+        torque = 0;
+        force = new Vector2(0,0);
 
         if (llFlap)
         {

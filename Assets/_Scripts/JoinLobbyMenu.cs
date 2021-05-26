@@ -15,7 +15,6 @@ public class JoinLobbyMenu : MonoBehaviour
     [SerializeField] private Button joinButton = null;
 
     private void OnEnable() {
-        Debug.Log("enabled");
         NetworkManagerLobby.OnClientConnected += HandleClientConnected;
         NetworkManagerLobby.OnClientDisconnected += HandleClientDisconnected;
         
@@ -37,12 +36,10 @@ public class JoinLobbyMenu : MonoBehaviour
         
         if(networkManager.isNetworkActive)
         {
-            Debug.Log("Aborting current connection");
             networkManager.StopClient();
         }
 
         string ipAddress =ipAddressInputField.text;
-        Debug.Log("Joining on: " + ipAddress);
 
         networkManager.networkAddress = ipAddress;
         networkManager.StartClient();
@@ -53,7 +50,6 @@ public class JoinLobbyMenu : MonoBehaviour
 
     private void HandleClientConnected()
     {
-        Debug.Log("Game found");
         joinButton.interactable = true;
 
         gameObject.SetActive(false);
@@ -63,7 +59,6 @@ public class JoinLobbyMenu : MonoBehaviour
 
     private void HandleClientDisconnected()
     {
-        Debug.Log("Game not found");
         joinButton.interactable = true;
     }
 

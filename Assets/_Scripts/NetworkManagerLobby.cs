@@ -15,6 +15,7 @@ public class NetworkManagerLobby : NetworkManager
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
     public static float tickrate = 0.2f;
+    public static int gameIndex = 0;
 
     //public override void OnStartServer() => spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
 
@@ -29,13 +30,11 @@ public class NetworkManagerLobby : NetworkManager
     {
 
         base.OnClientDisconnect(conn);
-        Debug.Log(conn.clientOwnedObjects);
         OnClientDisconnected?.Invoke();
     }
 
     public override void OnServerConnect(NetworkConnection conn)
     {
-        Debug.Log("New Player Connected: " + conn.connectionId);
 
         if(numPlayers >= maxConnections)
         {
@@ -53,11 +52,9 @@ public class NetworkManagerLobby : NetworkManager
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         base.OnServerAddPlayer(conn);
-
+        
         if(SceneManager.GetActiveScene().path == menuScene)
         {
-            Debug.Log("New Player Added");
-
             //NetworkPlayer roomPlayerInstance = Instantiate(roomPlayerPrefab);
             //NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }

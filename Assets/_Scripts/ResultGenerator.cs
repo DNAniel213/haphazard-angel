@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 public class ResultGenerator : MonoBehaviour
 {
-    public GameObject introQuoteObject;
     public Text teamScoreText, teamQuote, introQuote;
     public Text[] playerScores, playerNames; 
     public WingControl angel;
 
     int teamScore = 0;
+
+    public GameObject introQuoteObject = null;
 
     string[] quotes_overwhelming =
     {
@@ -29,8 +30,7 @@ public class ResultGenerator : MonoBehaviour
     };
 
     private void Start() {
-        introQuote.text = quotes_overwhelming[UnityEngine.Random.Range(0, quotes_overwhelming.Length-1)];
-        
+        //this.gameObject.SetActive(false);
     }
 
     public void GenerateScores(WingControl angel)

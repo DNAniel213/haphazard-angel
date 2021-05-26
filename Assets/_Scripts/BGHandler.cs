@@ -13,19 +13,27 @@ public class BGHandler : MonoBehaviour {
 	void Awake () {
 		angel = GameObject.Find("Angel(Clone)").GetComponent<WingControl>();
 	}
+
+	private void Start() {
+        transform.position = new Vector3(Mathf.Round(angel.transform.position.x), 0, 0); 
+	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (angel.rb2d.velocity.y > 0 && verticalDifference<=0.8)
-			MoveBackgroundDownward();
-		else if (angel.rb2d.velocity.y < 0 && verticalDifference>=-0.8)
-			MoveBackgroundUpward();
+	void FixedUpdate () {
+		if(angel!=null)
+		{
+			if (angel.rb2d.velocity.y > 0 && verticalDifference<=0.8)
+				MoveBackgroundDownward();
+			else if (angel.rb2d.velocity.y < 0 && verticalDifference>=-0.8)
+				MoveBackgroundUpward();
 
-		if (angel.rb2d.velocity.x > 0 && horizontalDifference<=0.8)
-			MoveBackgroundRight();
-		else if (angel.rb2d.velocity.x < 0 && horizontalDifference>=-0.8)
-			MoveBackgroundLeft();
+			if (angel.rb2d.velocity.x > 0 && horizontalDifference<=0.8)
+				MoveBackgroundRight();
+			else if (angel.rb2d.velocity.x < 0 && horizontalDifference>=-0.8)
+				MoveBackgroundLeft();
 		
+		}
+
 	}
 
 	void MoveBackgroundDownward()

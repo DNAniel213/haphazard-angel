@@ -28,6 +28,8 @@ public class UILobby : MonoBehaviour {
     [Header ("Lobby")]
     [SerializeField] Transform UIPlayerParent;
     [SerializeField] GameObject UIPlayerPrefab;
+    [SerializeField] Transform UIGameListParent;
+    [SerializeField] GameObject UIGameListPrefab;
     [SerializeField] Text matchIDText;
     [SerializeField] GameObject beginGameButton;
     [SerializeField] GameObject spectateCheck;
@@ -134,6 +136,8 @@ public class UILobby : MonoBehaviour {
     }
 
     public void DisconnectGame () {
+        //SceneManager.UnloadSceneAsync(2);
+        //SceneManager.UnloadSceneAsync(1);
         if (localPlayerLobbyUI != null) Destroy (localPlayerLobbyUI);
         NetworkPlayer.localPlayer.DisconnectGame ();
 
@@ -150,10 +154,22 @@ public class UILobby : MonoBehaviour {
         return newUIPlayer;
     }
 
+//TODO unfinished
+    public void SpawnGameUIPrefabs()
+    {
+        //GameObject[] games = MatchMaker.instance.matches;
+
+        // foreach(GameObject game in games)
+        // {
+        //     GameObject newGameItem = Instantiate(UIGameListPrefab, UIGameListParent);
+        // }
+    }
+
     public void BeginGame () {
         NetworkPlayer.localPlayer.BeginGame ();
         lobbyCanvas.enabled = false;
         beginGameButton.SetActive (false);
+
     }
 
     public void SearchGame () {
@@ -177,8 +193,14 @@ public class UILobby : MonoBehaviour {
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
-        connectCanvas.SetActive(false);
-        lobbyCanvas.enabled = false;
+
+        if(connectCanvas!=null)
+        {
+            connectCanvas.SetActive(false);
+            joinUI.SetActive(false);
+            lobbyCanvas.enabled = false;
+        }
+
     }
 
 

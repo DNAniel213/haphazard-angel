@@ -17,6 +17,8 @@ public class CameraFollow : MonoBehaviour
 		if (m_Target==null){
 			m_Target = GameObject.FindGameObjectWithTag("Player").transform;
 		}
+		minimumBoundary += (Vector2)m_Target.transform.position;
+		maximumBoundary += (Vector2)m_Target.transform.position;
 	}
 
     void FixedUpdate() {

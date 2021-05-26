@@ -42,6 +42,8 @@ public class MatchMaker : NetworkBehaviour {
 
     [SerializeField] int maxMatchPlayers = 12;
 
+    public int gameIndex = 0;
+
     void Start () {
         pointOrb_prefab = orbPrefab;
         instance = this;
@@ -116,8 +118,9 @@ public class MatchMaker : NetworkBehaviour {
         return false;
     }
 
+
     public void BeginGame (string _matchID) {
-        GameObject newAngel = (GameObject)Instantiate(prefab_angel);
+        GameObject newAngel = (GameObject)Instantiate(prefab_angel, new Vector3(gameIndex * 40, 0, 0), Quaternion.identity);
         newAngel.GetComponent<NetworkMatchChecker>().matchId = _matchID.ToGuid();
 
         for (int i = 0; i < matches.Count; i++) {
@@ -134,6 +137,7 @@ public class MatchMaker : NetworkBehaviour {
             }
         }
         NetworkServer.Spawn(newAngel);
+        gameIndex++;
 
     }
 
