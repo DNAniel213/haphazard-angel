@@ -16,6 +16,7 @@ public class LevelManager : NetworkBehaviour
     public GameObject prefab_rock;
     public GameObject prefab_spikyball;
     public GameObject prefab_spikyballUp;
+    public GameObject prefab_test;
 
     [Header ("X Spawn Range")]
     public float xMin;
@@ -172,6 +173,16 @@ public class LevelManager : NetworkBehaviour
         NetworkServer.Spawn(rock);
     }
 
+
+    public void SpawnTestRock()
+    {
+        Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
+        GameObject rock = (GameObject)Instantiate(prefab_test, pos,  Quaternion.identity);
+        rock.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
+
+        NetworkServer.Spawn(rock);
+    }
+
     public void SpawnSpikyBall()
     {
         bool direction = Random.Range(0, 100) < 25 ? false : true;
@@ -200,7 +211,6 @@ public class LevelManager : NetworkBehaviour
 
         Vector3 pos = new Vector3 (Random.Range (xMin, xMax), Random.Range (yMin, yMax), -2.13236f);
         GameObject orb = (GameObject)Instantiate(prefab_pointOrb, pos,  Quaternion.identity);
-        //NetworkPlayer.localPlayer.SpawnObjectInNetwork(pos);
         orb.GetComponent<NetworkMatchChecker>().matchId = networkMatchChecker.matchId;
         pointOrbs.Add(orb);
         NetworkServer.Spawn(orb);

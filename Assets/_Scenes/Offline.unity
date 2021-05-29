@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 1
+  PersistNetworkManagerToOfflineScene: 0
   runInBackground: 1
   autoStartServerBuild: 1
   serverTickRate: 30
@@ -772,7 +772,7 @@ MonoBehaviour:
   offlineScene: Assets/_Scenes/Offline.unity
   onlineScene: Assets/_Scenes/Lobby.unity
   transport: {fileID: 1634187375}
-  networkAddress: server.dandangames.fun
+  networkAddress: localhost
   maxConnections: 20000
   disconnectInactiveConnections: 1
   disconnectInactiveTimeout: 300
@@ -787,6 +787,7 @@ MonoBehaviour:
   - {fileID: 4332528517898502605, guid: d3dec92262ebe774c94c8a7201b3ef88, type: 3}
   - {fileID: 2370061443820726619, guid: 528455425b16d414ebe40a0f665b301f, type: 3}
   - {fileID: 7773964491595715123, guid: 639e72d9fa8ffb54ebf9ba1e9e2985b2, type: 3}
+  - {fileID: 4532055177567344714, guid: a57f26522d8d0ec4aa89572d0da693a2, type: 3}
   menuScene: Assets/_Scenes/Lobby.unity
   roomPlayerPrefab: {fileID: 0}
 --- !u!4 &1634187382

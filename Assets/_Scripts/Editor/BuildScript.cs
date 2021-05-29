@@ -13,6 +13,12 @@ public class BuildScript
         BuildWindowsClient();
         BuildWebClient();
     }
+    [MenuItem("Build/Build Linux and HTML5")]
+    public static void BuildLinuxHtml5()
+    {
+        BuildLinuxServer();
+        BuildWebClient();
+    }
 
     [MenuItem("Build/Build Server (Windows)")]
     public static void BuildWindowsServer()

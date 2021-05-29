@@ -35,6 +35,7 @@ public class NetworkPlayer : NetworkBehaviour
     [SyncVar]
     public int score = 0;
 
+
     // Start is called before the first frame update
     private void Awake() {
         networkMatchChecker = GetComponent<NetworkMatchChecker> ();
@@ -83,36 +84,8 @@ public class NetworkPlayer : NetworkBehaviour
         //RpcStartGame();
     }
 
-    [ClientRpc]
-    void RpcStartGame()
-    {
-        //LevelManager.levelManager.StartGame();
-    }
+ 
 
-
-    public void SpawnObjectInNetwork(Vector3 pos)
-    {
-
-        CmdSpawnObjectInNetwork( pos);
-    }
-
-    [Command]
-    public void CmdSpawnObjectInNetwork(Vector3 pos)
-    {
-        GameObject obj = (GameObject)Instantiate(MatchMaker.pointOrb_prefab, pos,  Quaternion.identity);
-        NetworkServer.Spawn(obj);
-        obj.GetComponent<NetworkMatchChecker>().matchId = this.matchID.ToGuid();
-
-        //RpcSpawnObjectInNetwork(pos);
-    }
-    
-    [ClientRpc]
-    public void RpcSpawnObjectInNetwork( Vector3 pos)
-    {
-       // GameObject obj = (GameObject)Instantiate(LevelManager.levelManager.prefab_pointOrb, pos,  Quaternion.identity);
-
-    }
-    
 
     public void Die()
     {
@@ -393,6 +366,16 @@ public class NetworkPlayer : NetworkBehaviour
         }
 
 
-        
+        public void SpawnTestObject()
+        {
+            CmdSpawnTestObject();
+        }
+
+        [Command]
+        public void CmdSpawnTestObject()
+        {
+            levelManager.SpawnTestRock();
+            Debug.Log("TEST OBJECT SPAWNED");
+        }
 
 }

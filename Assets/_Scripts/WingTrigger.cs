@@ -68,7 +68,6 @@ public class WingTrigger : MonoBehaviour
                         case PlayerPosition.ULEFT : tutorialScreen = GameObject.Find("ULTutorial");break;
                         case PlayerPosition.URIGHT : tutorialScreen = GameObject.Find("URTutorial");break;
                     }
-
                     p.nameText.text = p.playerName;
                 }
 
@@ -126,10 +125,10 @@ public class WingTrigger : MonoBehaviour
                 NetworkPlayer.localPlayer.ResetWingFlap();  
                 switch(wingPosition)
                 {
-                    case PlayerPosition.LLEFT : GameObject.Find("LL").SetActive(false); break;
-                    case PlayerPosition.LRIGHT : GameObject.Find("LR").SetActive(false);break;
-                    case PlayerPosition.ULEFT : GameObject.Find("UL").SetActive(false);break;
-                    case PlayerPosition.URIGHT : GameObject.Find("UR").SetActive(false);break;
+                    case PlayerPosition.LLEFT : GameObject.Find("LLWing").SetActive(false); break;
+                    case PlayerPosition.LRIGHT : GameObject.Find("LRWing").SetActive(false);break;
+                    case PlayerPosition.ULEFT : GameObject.Find("ULWing").SetActive(false);break;
+                    case PlayerPosition.URIGHT : GameObject.Find("URWing").SetActive(false);break;
                 }
                 wing.SetActive(false);
             }

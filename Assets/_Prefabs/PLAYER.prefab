@@ -63,8 +63,10 @@ MonoBehaviour:
   wingTrigger: {fileID: 0}
   gameManager: {fileID: 0}
   levelManager: {fileID: 0}
+  isInitialized: 0
   isAlive: 1
   score: 0
+  testObj: {fileID: 4532055177567344714, guid: a57f26522d8d0ec4aa89572d0da693a2, type: 3}
 --- !u!114 &2891093980090946414
 MonoBehaviour:
   m_ObjectHideFlags: 0

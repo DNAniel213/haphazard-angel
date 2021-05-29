@@ -196,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7773964491595715123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 20, z: 0}
+  m_LocalPosition: {x: 20, y: 50, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
   - {fileID: 2565677228808987701}
@@ -221,7 +221,7 @@ Rigidbody2D:
   m_LinearDrag: 1
   m_AngularDrag: 1
   m_GravityScale: 0.02
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 97a3e4cddb8635c4eba1265f44d106bf, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -256,7 +256,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.09, y: 0}
   serializedVersion: 2
   m_Radius: 0.84
 --- !u!247 &-7739789861794495667
@@ -324,6 +324,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.064
       objectReference: {fileID: 0}
@@ -377,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19800002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
       propertyPath: InitialModule.maxNumParticles
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 19800002, guid: db50ab1c866680e4bb870bf5eb72dd3d, type: 3}
       propertyPath: InitialModule.startColor.maxGradient.key0.a
